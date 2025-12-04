@@ -3,37 +3,37 @@
 
 project:
   name: "Lightweight Project Task Tracker"
-  phase: "Phase 1 Complete - Foundation Setup"
-  completion_percentage: 20
+  phase: "Phase 2 Complete - Data Models & Business Logic"
+  completion_percentage: 40
   last_updated: "2025-12-04"
   version: "1.0.0"
 
 assignment_requirements:
   data_models:
     - task: "Create Project model (name, description)"
-      status: "not_started"
+      status: "completed"
       file: "app/models/project.rb"
       tests: "spec/models/project_spec.rb"
     - task: "Create Task model (title, description, status, priority, due_date)"
-      status: "not_started"
+      status: "completed"
       file: "app/models/task.rb"
       tests: "spec/models/task_spec.rb"
     - task: "Add Task validations (status, priority)"
-      status: "not_started"
+      status: "completed"
     - task: "Add Project validations (name uniqueness)"
-      status: "not_started"
+      status: "completed"
 
   business_logic:
     - task: "Implement Task#overdue? method"
-      status: "not_started"
+      status: "completed"
       file: "app/models/task.rb"
       tests: "spec/models/task_spec.rb (3+ test cases)"
     - task: "Implement Task.with_status scope"
-      status: "not_started"
+      status: "completed"
     - task: "Implement Task.overdue scope"
-      status: "not_started"
+      status: "completed"
     - task: "Implement Task.sorted_by scope (priority_desc, due_date_asc)"
-      status: "not_started"
+      status: "completed"
 
   project_ui:
     - task: "Projects index page (list all projects)"
@@ -104,14 +104,14 @@ assignment_requirements:
 
   testing:
     - task: "Task model validation tests"
-      status: "not_started"
+      status: "completed"
       file: "spec/models/task_spec.rb"
       details: "Test status, priority, title, project presence"
     - task: "Task#overdue? method tests (3+ cases)"
-      status: "not_started"
+      status: "completed"
       cases: "Future date, past not done, past done"
     - task: "Task scope tests (with_status, overdue, sorted_by)"
-      status: "not_started"
+      status: "completed"
     - task: "API endpoint returns JSON test"
       status: "not_started"
       file: "spec/requests/api/tasks_spec.rb"
@@ -122,9 +122,6 @@ assignment_requirements:
 
 models:
   implemented:
-    []
-
-  planned:
     - name: "Project"
       file: "app/models/project.rb"
       attributes:
@@ -156,6 +153,9 @@ models:
         - "sorted_by(param)"
       methods:
         - "overdue?"
+
+  planned:
+    []
 
 controllers:
   planned:
@@ -217,18 +217,18 @@ setup_checklist:
     status: "completed"
     details: "Changed from db:schema:load to db:migrate to handle missing schema.rb"
   - task: "Generate Project model"
-    status: "not_started"
+    status: "completed"
     command: "rails g model Project name:string description:text"
   - task: "Generate Task model"
-    status: "not_started"
+    status: "completed"
     command: "rails g model Task project:references title:string description:text status:string due_date:date priority:integer"
   - task: "Run migrations"
-    status: "not_started"
+    status: "completed"
     command: "rails db:migrate"
 
 submission_checklist:
   - item: "Project and Task models with validations"
-    status: "not_started"
+    status: "completed"
   - item: "CRUD for both models"
     status: "not_started"
   - item: "Task filtering by status"
@@ -240,7 +240,7 @@ submission_checklist:
   - item: "JSON API endpoint with filtering"
     status: "not_started"
   - item: "Model tests (validations, overdue?, scopes)"
-    status: "not_started"
+    status: "completed"
   - item: "Request tests (API filtering)"
     status: "not_started"
   - item: "README with setup and API examples"
@@ -250,24 +250,28 @@ submission_checklist:
 
 next_actions:
   immediate:
-    - "Generate Project and Task models"
-    - "Add model validations"
-    - "Implement Task#overdue? method"
-    - "Write model tests for validations and overdue?"
+    - "Generate ProjectsController with views"
+    - "Generate TasksController with views"
+    - "Generate Api::TasksController"
+    - "Configure RESTful routes"
 
   this_week:
-    - "Implement Task scopes (with_status, overdue, sorted_by)"
-    - "Create CRUD controllers for Projects and Tasks"
+    - "Implement ProjectsController CRUD actions"
+    - "Implement TasksController CRUD actions"
+    - "Implement API TasksController#index with filtering"
     - "Build views with forms and tables"
     - "Add filtering and sorting to project show page"
-    - "Implement JSON API endpoint"
-    - "Write comprehensive tests"
+    - "Write comprehensive request tests"
 
   completed:
     - "Create Rails app with PostgreSQL database"
     - "Setup RSpec testing framework"
     - "Configure CI workflow with GitHub Actions"
     - "Fix CI database setup (db:migrate instead of db:schema:load)"
+    - "Generate and implement Project and Task models"
+    - "Add model validations and associations"
+    - "Implement Task#overdue? method and scopes"
+    - "Write comprehensive model tests (all passing)"
 
 blockers:
   []
@@ -313,7 +317,7 @@ implementation_plan:
 
   phase_2_models:
     name: "Phase 2: Data Models & Business Logic"
-    status: "not_started"
+    status: "completed"
     estimated_duration: "Core models phase"
     dependencies: ["phase_1_foundation"]
     steps:
@@ -403,7 +407,7 @@ implementation_plan:
 
   phase_3_controllers_routes:
     name: "Phase 3: Controllers & Routes"
-    status: "not_started"
+    status: "in_progress"
     estimated_duration: "Controllers and routing phase"
     dependencies: ["phase_2_models"]
     steps:
