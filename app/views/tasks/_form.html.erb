@@ -49,8 +49,8 @@
             ['3 - Medium', 3],
             ['4 - Low', 4],
             ['5 - Lowest', 5]
-          ], task.priority),
-          {},
+          ], task.priority || 3),
+          { include_blank: false },
           class: "bg-secondary-50 border border-secondary-300 text-secondary-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5",
           required: true %>
     </div>

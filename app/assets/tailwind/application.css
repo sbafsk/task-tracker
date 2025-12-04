@@ -30,13 +30,13 @@
     font-size: 0.875rem;
     font-weight: 500;
     color: white;
-    background-color: #2563eb;
+    background-color: #3b82f6;
     border-radius: 0.5rem;
     transition: background-color 0.2s;
   }
 
   .btn-primary:hover {
-    background-color: #1d4ed8;
+    background-color: #2563eb;
   }
 
   .btn-secondary {
@@ -82,13 +82,13 @@
     font-size: 0.875rem;
     font-weight: 500;
     color: white;
-    background-color: #dc2626;
+    background-color: #ef4444;
     border-radius: 0.5rem;
     transition: background-color 0.2s;
   }
 
   .btn-danger:hover {
-    background-color: #b91c1c;
+    background-color: #dc2626;
   }
 
   /* Badge variants */
