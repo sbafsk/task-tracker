@@ -1,1 +1,59 @@
 @import "tailwindcss";
+@import "flowbite";
+
+/* Custom utilities and components */
+@layer components {
+  /* Card components */
+  .card {
+    @apply bg-white rounded-lg shadow-card overflow-hidden;
+  }
+
+  .card-hover {
+    @apply transition-shadow duration-200 hover:shadow-card-hover;
+  }
+
+  /* Button variants */
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 focus:ring-4 focus:ring-primary-300 transition-colors;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-secondary-900 bg-white border border-secondary-300 rounded-lg hover:bg-secondary-50 focus:ring-4 focus:ring-secondary-200 transition-colors;
+  }
+
+  .btn-success {
+    @apply inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-success-600 rounded-lg hover:bg-success-700 focus:ring-4 focus:ring-success-300 transition-colors;
+  }
+
+  .btn-danger {
+    @apply inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-danger-600 rounded-lg hover:bg-danger-700 focus:ring-4 focus:ring-danger-300 transition-colors;
+  }
+
+  /* Badge variants */
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .badge-primary {
+    @apply badge bg-primary-100 text-primary-800;
+  }
+
+  .badge-success {
+    @apply badge bg-success-100 text-success-800;
+  }
+
+  .badge-warning {
+    @apply badge bg-warning-100 text-warning-800;
+  }
+
+  .badge-danger {
+    @apply badge bg-danger-100 text-danger-800;
+  }
+
+  .badge-secondary {
+    @apply badge bg-secondary-100 text-secondary-800;
+  }
+}
+
+/* Google Fonts - Montserrat and Lato */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Lato:wght@300;400;700;900&display=swap');
