@@ -284,6 +284,18 @@ This is a coding assignment implementation. No authentication required. Focus is
 - Test coverage of core business logic
 - Clean MVC separation
 
+
+
+## Optional Enhancements (Beyond Requirements)
+- Add task search functionality
+- Add project categories/tags
+- Export tasks to CSV
+- Task completion statistics dashboard
+- Pagination for large task lists
+- API pagination and sorting
+- Task comments or notes
+- Email notifications for overdue tasks
+
 ---
 
 **Version**: 1.0.0 | **Assignment**: Rails Task Tracker
