@@ -1,4 +1,105 @@
-<div>
-  <h1 class="font-bold text-4xl">Projects#show</h1>
-  <p>Find me in app/views/projects/show.html.erb</p>
+<div class="project-show">
+  <div class="page-header">
+    <div>
+      <h1><%= @project.name %></h1>
+      <% if @project.description.present? %>
+        <p class="project-description"><%= @project.description %></p>
+      <% end %>
+    </div>
+    <div class="actions">
+      <%= link_to "Edit Project", edit_project_path(@project), class: "btn btn-secondary" %>
+      <%= button_to "Delete Project", project_path(@project), method: :delete, data: { confirm: "Are you sure? This will also delete all tasks in this project." }, class: "btn btn-danger" %>
+    </div>
+  </div>
+
+  <div class="filters-section">
+    <%= form_with url: project_path(@project), method: :get, class: "filters-form" do |f| %>
+      <div class="filter-group">
+        <label for="status">Filter by Status:</label>
+        <%= select_tag :status,
+            options_for_select([
+              ['All', ''],
+              ['Todo', 'todo'],
+              ['In Progress', 'in_progress'],
+              ['Done', 'done']
+            ], params[:status]),
+            class: "filter-select",
+            onchange: "this.form.requestSubmit()" %>
+      </div>
+
+      <div class="filter-group">
+        <label for="sort">Sort by:</label>
+        <%= select_tag :sort,
+            options_for_select([
+              ['Default', ''],
+              ['Priority (High to Low)', 'priority_desc'],
+              ['Due Date (Soonest First)', 'due_date_asc']
+            ], params[:sort]),
+            class: "filter-select",
+            onchange: "this.form.requestSubmit()" %>
+      </div>
+
+      <% if params[:status].present? || params[:sort].present? %>
+        <%= link_to "Clear Filters", project_path(@project), class: "btn btn-link" %>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div class="tasks-section">
+    <div class="section-header">
+      <h2>Tasks</h2>
+      <%= link_to "Add New Task", new_project_task_path(@project), class: "btn btn-primary" %>
+    </div>
+
+    <% if @tasks.any? %>
+      <table class="tasks-table">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Status</th>
+            <th>Priority</th>
+            <th>Due Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @tasks.each do |task| %>
+            <tr class="<%= 'task-overdue' if task.overdue? %>">
+              <td>
+                <%= task.title %>
+                <% if task.overdue? %>
+                  <span class="badge badge-overdue">Overdue</span>
+                <% end %>
+              </td>
+              <td>
+                <span class="status-badge status-<%= task.status %>">
+                  <%= task.status.humanize %>
+                </span>
+              </td>
+              <td>
+                <span class="priority-badge priority-<%= task.priority %>">
+                  <%= task.priority %>
+                </span>
+              </td>
+              <td>
+                <%= task.due_date ? task.due_date.strftime("%b %d, %Y") : "No due date" %>
+              </td>
+              <td class="actions">
+                <%= link_to "Edit", edit_project_task_path(@project, task), class: "btn btn-secondary" %>
+                <%= button_to "Delete", project_task_path(@project, task), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <p class="empty-state">
+        <% if params[:status].present? || params[:sort].present? %>
+          No tasks match the current filters. <%= link_to "Clear filters", project_path(@project) %> to see all tasks.
+        <% else %>
+          No tasks yet. <%= link_to "Add your first task", new_project_task_path(@project) %> to get started!
+        <% end %>
+      </p>
+    <% end %>
+  </div>
 </div>

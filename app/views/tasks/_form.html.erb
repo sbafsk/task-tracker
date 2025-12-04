@@ -1,0 +1,56 @@
+<%= form_with(model: [project, task], local: true, class: "form") do |f| %>
+  <% if task.errors.any? %>
+    <div class="error-messages">
+      <h3><%= pluralize(task.errors.count, "error") %> prohibited this task from being saved:</h3>
+      <ul>
+        <% task.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :title, "Task Title" %>
+    <%= f.text_field :title, class: "form-control", placeholder: "Enter task title", required: true %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :description, "Description (Optional)" %>
+    <%= f.text_area :description, class: "form-control", placeholder: "Enter task description", rows: 4 %>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <%= f.label :status, "Status" %>
+      <%= f.select :status,
+          options_for_select([
+            ['Todo', 'todo'],
+            ['In Progress', 'in_progress'],
+            ['Done', 'done']
+          ], task.status),
+          {},
+          class: "form-control",
+          required: true %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :priority, "Priority (1 = Highest, 5 = Lowest)" %>
+      <%= f.select :priority,
+          options_for_select((1..5).map { |p| [p.to_s, p] }, task.priority),
+          {},
+          class: "form-control",
+          required: true %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :due_date, "Due Date (Optional)" %>
+    <%= f.date_field :due_date, class: "form-control" %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.submit class: "btn btn-primary" %>
+    <%= link_to "Cancel", project_path(project), class: "btn btn-link" %>
+  </div>
+<% end %>
