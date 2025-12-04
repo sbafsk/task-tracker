@@ -12,21 +12,19 @@ A lightweight task tracker where users can manage projects and their associated 
 
 **Key Features**: Project management, task tracking with status/priority, overdue detection, filtering/sorting, JSON API endpoints.
 
-**Status**: Assignment implementation. See [`requeriments.md`](requeriments.md) for complete specifications.
+**Status**: Assignment implementation. See [`docs/requeriments.md`](docs/requeriments.md) for complete specifications.
 
 ## Quick Start
 
 ```bash
-# 1. Create Rails app
-rails new task-tracker --database=postgresql --css=tailwind
+# 1. Install dependencies
+bundle install
 
 # 2. Setup database
-cd task-tracker
-bundle install
 rails db:create db:migrate
 
 # 3. Start development server
-bin/dev
+rails server
 
 # 4. Visit application
 # http://localhost:3000
@@ -94,7 +92,7 @@ Tests cover:
 
 ## Project Requirements
 
-See [`requeriments.md`](requeriments.md) for:
+See [`docs/requeriments.md`](requeriments.md) for:
 - Complete functional requirements
 - Data model specifications
 - UI requirements
