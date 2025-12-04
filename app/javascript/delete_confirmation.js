@@ -19,7 +19,7 @@ Turbo.setConfirmMethod((message, element) => {
 
     currentElement = element;
     deleteMessage.textContent = message;
-    modal.classList.add('show');
+    modal.classList.remove('hidden');
 
     // Remove any existing listeners to prevent duplicates
     const newCancelBtn = cancelBtn.cloneNode(true);
@@ -29,14 +29,14 @@ Turbo.setConfirmMethod((message, element) => {
 
     // Cancel button
     newCancelBtn.addEventListener('click', () => {
-      modal.classList.remove('show');
+      modal.classList.add('hidden');
       currentElement = null;
       resolve(false);
     });
 
     // Confirm button
     newConfirmBtn.addEventListener('click', () => {
-      modal.classList.remove('show');
+      modal.classList.add('hidden');
       currentElement = null;
       resolve(true);
     });
@@ -44,7 +44,7 @@ Turbo.setConfirmMethod((message, element) => {
     // Close on backdrop click
     const handleBackdropClick = (e) => {
       if (e.target === modal) {
-        modal.classList.remove('show');
+        modal.classList.add('hidden');
         modal.removeEventListener('click', handleBackdropClick);
         currentElement = null;
         resolve(false);
@@ -54,8 +54,8 @@ Turbo.setConfirmMethod((message, element) => {
 
     // Close on Escape key
     const handleEscape = (e) => {
-      if (e.key === 'Escape' && modal.classList.contains('show')) {
-        modal.classList.remove('show');
+      if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+        modal.classList.add('hidden');
         document.removeEventListener('keydown', handleEscape);
         currentElement = null;
         resolve(false);
