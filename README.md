@@ -21,17 +21,40 @@ A lightweight task tracker where users can manage projects and their associated 
 - **PostgreSQL**: 15 or higher
 - **Bundler**: 2.3 or higher
 
-## Quick Start
+## Setup Instructions
 
+### 1. Clone the repository
+```bash
+git clone <repository-url>
+cd task-tracker
+```
+
+### 2. Install dependencies
 ```bash
 bundle install
-rails db:create db:migrate db:seed
+```
+
+### 3. Configure database
+Ensure PostgreSQL is running on your system. The application uses the default PostgreSQL connection settings.
+
+### 4. Create and setup database
+```bash
+# Create the database
+rails db:create
+
+# Run migrations to create tables
+rails db:migrate
+
+# (Optional) Load sample data for testing
+rails db:seed
+```
+
+### 5. Start the development server
+```bash
 rails server
 ```
 
-Visit [http://localhost:3000](http://localhost:3000)
-
-See [docs/guides/development.md](docs/guides/development.md) for detailed setup instructions.
+The application will be available at [http://localhost:3000](http://localhost:3000)
 
 ## Core Features
 
@@ -128,24 +151,42 @@ curl http://localhost:3000/api/projects/1/tasks?status=in_progress&overdue=true
 ]
 ```
 
-## Development
+## Running Tests
 
 ```bash
-rails server                    # Start server
-rails console                   # Rails console
-bundle exec rspec               # Run tests
-rails routes                    # View routes
+# Run full test suite
+bundle exec rspec
+
+# Run only model tests
+bundle exec rspec spec/models
+
+# Run only request tests
+bundle exec rspec spec/requests
+
+# Run specific test file
+bundle exec rspec spec/models/task_spec.rb
+
+# Run specific test at line number
+bundle exec rspec spec/models/task_spec.rb:42
 ```
 
-**Full guides**:
-- [Development](docs/guides/development.md) - Setup, workflow, debugging
-- [Testing](docs/guides/testing.md) - RSpec, factories, test coverage
-- [Deployment](docs/guides/deployment.md) - Deploy to Render.com
+### Test Coverage
 
-## Documentation
+The test suite includes 81 examples covering:
+- **Model validations**: status inclusion, priority range, project presence, title presence
+- **Task#overdue? method**: future dates, past dates with different statuses, nil dates
+- **Task scopes**: `.with_status`, `.overdue`, `.sorted_by` (priority_desc, due_date_asc)
+- **API endpoints**: JSON responses, status filtering, overdue filtering, combined filters
 
-- [Requirements](docs/requeriments.md) - Complete assignment specifications
-- [Documentation Index](docs/index.md) - All documentation links
+All tests pass with 0 failures.
+
+## Additional Resources
+
+- **Development Guide**: [docs/guides/development.md](docs/guides/development.md) - Workflow, debugging
+- **Testing Guide**: [docs/guides/testing.md](docs/guides/testing.md) - RSpec, factories, coverage
+- **Deployment Guide**: [docs/guides/deployment.md](docs/guides/deployment.md) - Deploy to Render.com
+- **Requirements**: [docs/requeriments.md](docs/requeriments.md) - Complete assignment specifications
+- **Documentation Index**: [docs/index.md](docs/index.md) - All documentation links
 
 ## Routes
 
