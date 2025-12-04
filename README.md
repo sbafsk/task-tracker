@@ -25,7 +25,7 @@ A lightweight task tracker where users can manage projects and their associated 
 
 ### 1. Clone the repository
 ```bash
-git clone <repository-url>
+git clone git@github.com:sbafsk/task-tracker.git
 cd task-tracker
 ```
 
