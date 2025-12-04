@@ -1,0 +1,132 @@
+project:
+  name: "Lightweight Project Task Tracker"
+  type: "Rails Coding Assignment"
+  description: "Simple Rails app for managing projects and tasks with filtering, sorting, and JSON API"
+  target_market: "Coding assignment submission"
+  business_domain: "Task Management"
+
+current_status:
+  phase: "Assignment Implementation"
+  completion: "0%"
+  next_priority: "Implement Project and Task models with validations"
+  last_updated: "2025-12-04"
+
+tech_stack:
+  backend: "Ruby on Rails 8.0+"
+  ruby_version: "Ruby 3.3+"
+  database: "PostgreSQL 15+"
+  frontend: "ERB templates (no Hotwire required)"
+  css: "Basic CSS (minimal styling)"
+  testing: "RSpec or Minitest"
+  authentication: "None (not required)"
+  authorization: "None (not required)"
+
+architecture:
+  pattern: "MVC (Model-View-Controller) with scopes"
+  deployment: "Not required for assignment"
+  security: "Basic Rails security best practices"
+
+development:
+  team_size: "1 (assignment)"
+  testing_strategy: "Test core business logic and API endpoints"
+  code_review_process: "Assignment review"
+
+features:
+  core_features:
+    - "Project CRUD with name and description"
+    - "Task CRUD with status, priority, due_date"
+    - "Task filtering by status"
+    - "Task sorting by priority or due date"
+    - "Overdue task detection"
+    - "JSON API for tasks with filtering"
+  completed_features:
+    []
+  in_progress_features:
+    []
+
+models:
+  - name: "Project"
+    attributes:
+      - "name (string, required, unique)"
+      - "description (text, optional)"
+    associations:
+      - "has_many :tasks, dependent: :destroy"
+
+  - name: "Task"
+    attributes:
+      - "project_id (references Project)"
+      - "title (string, required)"
+      - "description (text, optional)"
+      - "status (string, required: todo/in_progress/done)"
+      - "due_date (date, optional)"
+      - "priority (integer, required: 1-5)"
+    associations:
+      - "belongs_to :project"
+    scopes:
+      - "with_status(status) - filter by status"
+      - "overdue - returns overdue tasks"
+      - "sorted_by(param) - priority_desc or due_date_asc"
+    methods:
+      - "overdue? - returns true if task is overdue"
+
+routes:
+  web_ui:
+    - "GET /projects - list all projects"
+    - "GET /projects/:id - show project with tasks"
+    - "GET /projects/new - new project form"
+    - "POST /projects - create project"
+    - "GET /projects/:id/edit - edit project form"
+    - "PATCH /projects/:id - update project"
+    - "DELETE /projects/:id - delete project"
+    - "Tasks nested under projects"
+  api:
+    - "GET /api/projects/:project_id/tasks - list tasks (JSON)"
+    - "Supports: ?status=todo&overdue=true"
+
+testing_requirements:
+  model_tests:
+    - "Task validations (status, priority, title, project)"
+    - "Task#overdue? method (3+ cases)"
+    - "Task scopes (with_status, overdue, sorted_by)"
+  request_tests:
+    - "API endpoint returns JSON tasks"
+    - "API status filter works"
+    - "API overdue filter works"
+
+assignment_requirements:
+  - "Use Rails 7 or 8"
+  - "Standard ERB templates"
+  - "RESTful routes"
+  - "Keep controllers lean - use scopes"
+  - "Test core business logic"
+  - "README with setup and API examples"
+  - "No authentication required"
+
+rails_conventions:
+  routing: "RESTful routes with resources, API namespaced under /api"
+  models: "ActiveRecord with validations, associations, scopes"
+  controllers: "Thin controllers, business logic in scopes"
+  views: "ERB templates with basic forms"
+  testing: "RSpec or Minitest for models and requests"
+
+references:
+  requirements: "requeriments.md"
+  detailed_status: "docs/status/progress.yaml"
+  standards: "standards/coding.md"
+  setup_guide: "README.md"
+
+ai_context:
+  mcp_integration: true
+  context_loading_priority:
+    - "requeriments.md"
+    - "docs/status/progress.yaml"
+    - ".ai/context.yaml"
+    - "standards/coding.md"
+  ai_instructions: "Follow Rails conventions, implement RESTful design, prevent N+1 queries, write comprehensive tests for core logic"
+  development_assistance:
+    - "Model generation with validations and scopes"
+    - "Controller actions following RESTful conventions"
+    - "Task filtering and sorting logic"
+    - "JSON API endpoint implementation"
+    - "RSpec test generation for models and requests"
+    - "Migration creation"

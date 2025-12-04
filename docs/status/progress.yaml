@@ -1,0 +1,269 @@
+# Assignment Progress
+# Single source of truth for task tracker assignment status
+
+project:
+  name: "Lightweight Project Task Tracker"
+  phase: "Assignment Implementation"
+  completion_percentage: 0
+  last_updated: "2025-12-04"
+  version: "1.0.0"
+
+assignment_requirements:
+  data_models:
+    - task: "Create Project model (name, description)"
+      status: "not_started"
+      file: "app/models/project.rb"
+      tests: "spec/models/project_spec.rb"
+    - task: "Create Task model (title, description, status, priority, due_date)"
+      status: "not_started"
+      file: "app/models/task.rb"
+      tests: "spec/models/task_spec.rb"
+    - task: "Add Task validations (status, priority)"
+      status: "not_started"
+    - task: "Add Project validations (name uniqueness)"
+      status: "not_started"
+
+  business_logic:
+    - task: "Implement Task#overdue? method"
+      status: "not_started"
+      file: "app/models/task.rb"
+      tests: "spec/models/task_spec.rb (3+ test cases)"
+    - task: "Implement Task.with_status scope"
+      status: "not_started"
+    - task: "Implement Task.overdue scope"
+      status: "not_started"
+    - task: "Implement Task.sorted_by scope (priority_desc, due_date_asc)"
+      status: "not_started"
+
+  project_ui:
+    - task: "Projects index page (list all projects)"
+      status: "not_started"
+      route: "GET /projects"
+      view: "app/views/projects/index.html.erb"
+    - task: "Show project with task counts"
+      status: "not_started"
+      details: "Total tasks and incomplete tasks count"
+    - task: "Project show page with tasks table"
+      status: "not_started"
+      route: "GET /projects/:id"
+      view: "app/views/projects/show.html.erb"
+    - task: "New/Edit project forms"
+      status: "not_started"
+    - task: "Delete project functionality"
+      status: "not_started"
+
+  task_ui:
+    - task: "Task table with title, status, priority, due_date"
+      status: "not_started"
+      view: "app/views/projects/show.html.erb"
+    - task: "Overdue badge in task table"
+      status: "not_started"
+      details: "Show 'Overdue' when past due and not done"
+    - task: "New/Edit task forms"
+      status: "not_started"
+      view: "app/views/tasks/new.html.erb, edit.html.erb"
+    - task: "Task form validations and error messages"
+      status: "not_started"
+    - task: "View/Edit/Delete task actions"
+      status: "not_started"
+
+  filtering_sorting:
+    - task: "Status filter (All, Todo, In Progress, Done)"
+      status: "not_started"
+      route: "/projects/:id?status=todo"
+      implementation: "Use Task.with_status scope"
+    - task: "Sort by priority (high to low)"
+      status: "not_started"
+      route: "/projects/:id?sort=priority_desc"
+      implementation: "Use Task.sorted_by scope"
+    - task: "Sort by due date (soonest to latest)"
+      status: "not_started"
+      route: "/projects/:id?sort=due_date_asc"
+      implementation: "Use Task.sorted_by scope"
+    - task: "Combine filter + sort"
+      status: "not_started"
+      details: "Apply both status filter and sorting together"
+
+  json_api:
+    - task: "API endpoint GET /api/projects/:project_id/tasks"
+      status: "not_started"
+      controller: "app/controllers/api/tasks_controller.rb"
+      route: "GET /api/projects/:project_id/tasks"
+    - task: "API returns JSON with overdue field"
+      status: "not_started"
+      details: "Include computed overdue boolean in response"
+    - task: "API status filter (status=todo)"
+      status: "not_started"
+      example: "/api/projects/1/tasks?status=todo"
+    - task: "API overdue filter (overdue=true)"
+      status: "not_started"
+      example: "/api/projects/1/tasks?overdue=true"
+    - task: "API combines filters"
+      status: "not_started"
+      example: "/api/projects/1/tasks?status=in_progress&overdue=true"
+
+  testing:
+    - task: "Task model validation tests"
+      status: "not_started"
+      file: "spec/models/task_spec.rb"
+      details: "Test status, priority, title, project presence"
+    - task: "Task#overdue? method tests (3+ cases)"
+      status: "not_started"
+      cases: "Future date, past not done, past done"
+    - task: "Task scope tests (with_status, overdue, sorted_by)"
+      status: "not_started"
+    - task: "API endpoint returns JSON test"
+      status: "not_started"
+      file: "spec/requests/api/tasks_spec.rb"
+    - task: "API status filter test"
+      status: "not_started"
+    - task: "API overdue filter test"
+      status: "not_started"
+
+models:
+  implemented:
+    []
+
+  planned:
+    - name: "Project"
+      file: "app/models/project.rb"
+      attributes:
+        - "name (string, required, unique)"
+        - "description (text, optional)"
+      associations:
+        - "has_many :tasks, dependent: :destroy"
+      validations:
+        - "validates :name, presence: true, uniqueness: true"
+
+    - name: "Task"
+      file: "app/models/task.rb"
+      attributes:
+        - "project_id (references Project)"
+        - "title (string, required)"
+        - "description (text, optional)"
+        - "status (string, required: todo/in_progress/done)"
+        - "due_date (date, optional)"
+        - "priority (integer, required: 1-5)"
+      associations:
+        - "belongs_to :project"
+      validations:
+        - "validates :title, presence: true"
+        - "validates :status, inclusion: { in: %w[todo in_progress done] }"
+        - "validates :priority, numericality: { in: 1..5 }"
+      scopes:
+        - "with_status(status)"
+        - "overdue"
+        - "sorted_by(param)"
+      methods:
+        - "overdue?"
+
+controllers:
+  planned:
+    - name: "ProjectsController"
+      actions: ["index", "show", "new", "create", "edit", "update", "destroy"]
+      notes: "Use includes to prevent N+1 queries"
+    - name: "TasksController"
+      actions: ["new", "create", "edit", "update", "destroy"]
+      notes: "Nested under projects"
+    - name: "Api::TasksController"
+      actions: ["index"]
+      notes: "Returns JSON with filtering"
+
+routes:
+  implemented:
+    []
+
+  planned:
+    web:
+      - "resources :projects do"
+      - "  resources :tasks"
+      - "end"
+    api:
+      - "namespace :api do"
+      - "  resources :projects, only: [] do"
+      - "    resources :tasks, only: [:index]"
+      - "  end"
+      - "end"
+
+testing:
+  coverage:
+    overall: 0
+    models: 0
+    requests: 0
+
+  test_files:
+    planned:
+      - "spec/models/project_spec.rb"
+      - "spec/models/task_spec.rb"
+      - "spec/requests/api/tasks_spec.rb"
+
+performance:
+  optimizations:
+    - task: "Prevent N+1 queries in projects index"
+      solution: "Use includes(:tasks) or left_joins with count"
+      status: "not_started"
+
+setup_checklist:
+  - task: "Create Rails app with PostgreSQL"
+    status: "not_started"
+    command: "rails new task-tracker --database=postgresql"
+  - task: "Generate Project model"
+    status: "not_started"
+    command: "rails g model Project name:string description:text"
+  - task: "Generate Task model"
+    status: "not_started"
+    command: "rails g model Task project:references title:string description:text status:string due_date:date priority:integer"
+  - task: "Run migrations"
+    status: "not_started"
+    command: "rails db:migrate"
+  - task: "Setup RSpec"
+    status: "not_started"
+    command: "rails g rspec:install"
+
+submission_checklist:
+  - item: "Project and Task models with validations"
+    status: "not_started"
+  - item: "CRUD for both models"
+    status: "not_started"
+  - item: "Task filtering by status"
+    status: "not_started"
+  - item: "Task sorting by priority/due_date"
+    status: "not_started"
+  - item: "Overdue detection in UI"
+    status: "not_started"
+  - item: "JSON API endpoint with filtering"
+    status: "not_started"
+  - item: "Model tests (validations, overdue?, scopes)"
+    status: "not_started"
+  - item: "Request tests (API filtering)"
+    status: "not_started"
+  - item: "README with setup and API examples"
+    status: "not_started"
+  - item: "Clean RESTful code"
+    status: "not_started"
+
+next_actions:
+  immediate:
+    - "Create Rails app with PostgreSQL database"
+    - "Generate Project and Task models"
+    - "Add model validations"
+    - "Implement Task#overdue? method"
+
+  this_week:
+    - "Implement Task scopes (with_status, overdue, sorted_by)"
+    - "Create CRUD controllers for Projects and Tasks"
+    - "Build views with forms and tables"
+    - "Add filtering and sorting to project show page"
+    - "Implement JSON API endpoint"
+    - "Write comprehensive tests"
+
+blockers:
+  []
+
+notes:
+  - "No authentication required for this assignment"
+  - "Focus on core functionality and test coverage"
+  - "Keep UI simple - no fancy CSS required"
+  - "Use scopes to keep controllers lean"
+  - "Priority 1 = highest, 5 = lowest"
+  - "Overdue badge only when due_date < today AND status != 'done'"
