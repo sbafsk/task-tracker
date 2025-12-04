@@ -3,8 +3,8 @@
 
 project:
   name: "Lightweight Project Task Tracker"
-  phase: "Assignment Implementation"
-  completion_percentage: 0
+  phase: "Phase 1 Complete - Foundation Setup"
+  completion_percentage: 20
   last_updated: "2025-12-04"
   version: "1.0.0"
 
@@ -267,3 +267,457 @@ notes:
   - "Use scopes to keep controllers lean"
   - "Priority 1 = highest, 5 = lowest"
   - "Overdue badge only when due_date < today AND status != 'done'"
+
+implementation_plan:
+  overview: "Complete implementation in 5 phases: Setup, Models, Controllers & Routes, Views & UI, Testing & Polish"
+
+  phase_1_foundation:
+    name: "Phase 1: Project Setup & Database"
+    status: "completed"
+    estimated_duration: "Setup phase"
+    steps:
+      - step: 1
+        action: "Verify Rails app structure and dependencies"
+        command: "bundle install"
+        validation: "Gemfile.lock exists, all gems installed"
+
+      - step: 2
+        action: "Setup PostgreSQL database"
+        command: "rails db:create"
+        validation: "Database created successfully"
+
+      - step: 3
+        action: "Configure RSpec testing framework"
+        commands:
+          - "Add rspec-rails, factory_bot_rails, shoulda-matchers to Gemfile"
+          - "bundle install"
+          - "rails generate rspec:install"
+        validation: "spec/ directory created with rails_helper.rb and spec_helper.rb"
+
+      - step: 4
+        action: "Configure shoulda-matchers for cleaner tests"
+        file: "spec/rails_helper.rb"
+        validation: "Shoulda::Matchers configured in rails_helper.rb"
+
+  phase_2_models:
+    name: "Phase 2: Data Models & Business Logic"
+    status: "not_started"
+    estimated_duration: "Core models phase"
+    dependencies: ["phase_1_foundation"]
+    steps:
+      - step: 1
+        action: "Generate Project model with migration"
+        command: "rails generate model Project name:string description:text"
+        files_created:
+          - "app/models/project.rb"
+          - "db/migrate/TIMESTAMP_create_projects.rb"
+          - "spec/models/project_spec.rb"
+        validation: "Migration file and model created"
+
+      - step: 2
+        action: "Generate Task model with migration"
+        command: "rails generate model Task project:references title:string description:text status:string due_date:date priority:integer"
+        files_created:
+          - "app/models/task.rb"
+          - "db/migrate/TIMESTAMP_create_tasks.rb"
+          - "spec/models/task_spec.rb"
+        validation: "Migration file and model created with foreign key"
+
+      - step: 3
+        action: "Add NOT NULL constraints and defaults to migrations"
+        files:
+          - "db/migrate/TIMESTAMP_create_tasks.rb"
+        changes:
+          - "Add null: false to title, status, priority columns"
+          - "Add default: 'todo' to status"
+        validation: "Migrations have proper constraints"
+
+      - step: 4
+        action: "Run migrations to create database tables"
+        command: "rails db:migrate"
+        validation: "schema.rb updated with projects and tasks tables"
+
+      - step: 5
+        action: "Implement Project model validations and associations"
+        file: "app/models/project.rb"
+        implementation:
+          - "has_many :tasks, dependent: :destroy"
+          - "validates :name, presence: true, uniqueness: true"
+        validation: "Project model complete with associations and validations"
+
+      - step: 6
+        action: "Implement Task model validations and associations"
+        file: "app/models/task.rb"
+        implementation:
+          - "belongs_to :project"
+          - "validates :title, presence: true"
+          - "validates :status, presence: true, inclusion: { in: %w[todo in_progress done] }"
+          - "validates :priority, presence: true, numericality: { only_integer: true, in: 1..5 }"
+        validation: "Task model has all required validations"
+
+      - step: 7
+        action: "Implement Task scopes for filtering and sorting"
+        file: "app/models/task.rb"
+        implementation:
+          - "scope :with_status - filter by status parameter"
+          - "scope :overdue - find tasks with due_date < today AND status != 'done'"
+          - "scope :sorted_by - handle priority_desc and due_date_asc sorting"
+        validation: "All three scopes implemented correctly"
+
+      - step: 8
+        action: "Implement Task#overdue? instance method"
+        file: "app/models/task.rb"
+        implementation: "Return true if due_date.present? && due_date < Date.today && status != 'done'"
+        validation: "Method handles all edge cases (nil date, future date, done status)"
+
+      - step: 9
+        action: "Create FactoryBot factories for testing"
+        files:
+          - "spec/factories/projects.rb"
+          - "spec/factories/tasks.rb"
+        validation: "Factories defined with valid default attributes"
+
+      - step: 10
+        action: "Write comprehensive model tests"
+        files:
+          - "spec/models/project_spec.rb - validations and associations"
+          - "spec/models/task_spec.rb - validations, associations, scopes, overdue? method"
+        validation: "All model tests passing with good coverage"
+
+      - step: 11
+        action: "Run model tests to verify implementation"
+        command: "bundle exec rspec spec/models"
+        validation: "All model tests pass (green)"
+
+  phase_3_controllers_routes:
+    name: "Phase 3: Controllers & Routes"
+    status: "not_started"
+    estimated_duration: "Controllers and routing phase"
+    dependencies: ["phase_2_models"]
+    steps:
+      - step: 1
+        action: "Generate ProjectsController"
+        command: "rails generate controller Projects index show new edit"
+        files_created:
+          - "app/controllers/projects_controller.rb"
+          - "app/views/projects/index.html.erb"
+          - "app/views/projects/show.html.erb"
+          - "app/views/projects/new.html.erb"
+          - "app/views/projects/edit.html.erb"
+        validation: "Controller and view files created"
+
+      - step: 2
+        action: "Implement ProjectsController CRUD actions"
+        file: "app/controllers/projects_controller.rb"
+        actions:
+          - "index - list all projects with task counts (use includes to prevent N+1)"
+          - "show - display project with filtered/sorted tasks"
+          - "new - initialize new project"
+          - "create - save new project with validations"
+          - "edit - load project for editing"
+          - "update - save project updates"
+          - "destroy - delete project and associated tasks"
+        validation: "All 7 RESTful actions implemented"
+
+      - step: 3
+        action: "Generate TasksController"
+        command: "rails generate controller Tasks new edit"
+        files_created:
+          - "app/controllers/tasks_controller.rb"
+          - "app/views/tasks/new.html.erb"
+          - "app/views/tasks/edit.html.erb"
+        validation: "Controller and view files created"
+
+      - step: 4
+        action: "Implement TasksController CRUD actions"
+        file: "app/controllers/tasks_controller.rb"
+        actions:
+          - "new - initialize new task for project"
+          - "create - save new task"
+          - "edit - load task for editing"
+          - "update - save task updates"
+          - "destroy - delete task"
+        validation: "All task actions implemented (nested under project)"
+
+      - step: 5
+        action: "Generate API TasksController"
+        command: "mkdir -p app/controllers/api && rails generate controller Api::Tasks index"
+        files_created:
+          - "app/controllers/api/tasks_controller.rb"
+        validation: "API controller created in api namespace"
+
+      - step: 6
+        action: "Implement API TasksController#index"
+        file: "app/controllers/api/tasks_controller.rb"
+        implementation:
+          - "Find project by params[:project_id]"
+          - "Apply with_status scope if status param present"
+          - "Apply overdue scope if overdue=true param present"
+          - "Return JSON with id, title, status, priority, due_date, overdue fields"
+        validation: "API returns properly formatted JSON with computed fields"
+
+      - step: 7
+        action: "Configure RESTful routes"
+        file: "config/routes.rb"
+        implementation:
+          - "resources :projects with nested resources :tasks"
+          - "namespace :api with projects/:project_id/tasks route"
+          - "Set root to projects#index"
+        validation: "rails routes shows all expected routes"
+
+      - step: 8
+        action: "Verify routes are configured correctly"
+        command: "rails routes | grep -E '(projects|tasks)'"
+        validation: "All web and API routes present"
+
+  phase_4_views_ui:
+    name: "Phase 4: Views & User Interface"
+    status: "not_started"
+    estimated_duration: "UI implementation phase"
+    dependencies: ["phase_3_controllers_routes"]
+    steps:
+      - step: 1
+        action: "Create application layout with basic styling"
+        file: "app/views/layouts/application.html.erb"
+        implementation:
+          - "Add flash message display area"
+          - "Add basic navigation structure"
+          - "Include minimal CSS for readability"
+        validation: "Layout renders properly with flash messages"
+
+      - step: 2
+        action: "Build projects index view"
+        file: "app/views/projects/index.html.erb"
+        features:
+          - "Page title and 'New Project' button"
+          - "Table listing all projects"
+          - "Show project name with link to show page"
+          - "Display total task count and incomplete task count"
+          - "Edit and Delete links for each project"
+        validation: "Index page displays all projects with task counts"
+
+      - step: 3
+        action: "Build project show view"
+        file: "app/views/projects/show.html.erb"
+        features:
+          - "Display project name and description"
+          - "Status filter form (All, Todo, In Progress, Done)"
+          - "Sort dropdown (Priority high→low, Due Date soonest→latest)"
+          - "Tasks table with columns: title, status, priority, due_date, actions"
+          - "Overdue badge (red/orange indicator) when task.overdue?"
+          - "Link to add new task"
+          - "Edit and Delete links for each task"
+        validation: "Show page displays filtered/sorted tasks with overdue badges"
+
+      - step: 4
+        action: "Create project form partial"
+        file: "app/views/projects/_form.html.erb"
+        features:
+          - "Error message display if validation fails"
+          - "Name field (required)"
+          - "Description textarea (optional)"
+          - "Submit button"
+        validation: "Form works in both new and edit views"
+
+      - step: 5
+        action: "Build new project view"
+        file: "app/views/projects/new.html.erb"
+        implementation: "Render form partial with 'Create Project' heading"
+        validation: "New project form renders and submits correctly"
+
+      - step: 6
+        action: "Build edit project view"
+        file: "app/views/projects/edit.html.erb"
+        implementation: "Render form partial with 'Edit Project' heading"
+        validation: "Edit project form renders and updates correctly"
+
+      - step: 7
+        action: "Create task form partial"
+        file: "app/views/tasks/_form.html.erb"
+        features:
+          - "Error message display"
+          - "Title field (required)"
+          - "Description textarea (optional)"
+          - "Status dropdown (Todo, In Progress, Done)"
+          - "Priority dropdown (1-5)"
+          - "Due date field (date picker)"
+          - "Submit button"
+        validation: "Form validates and saves task correctly"
+
+      - step: 8
+        action: "Build new task view"
+        file: "app/views/tasks/new.html.erb"
+        implementation: "Render form partial with breadcrumb to parent project"
+        validation: "New task form creates task under correct project"
+
+      - step: 9
+        action: "Build edit task view"
+        file: "app/views/tasks/edit.html.erb"
+        implementation: "Render form partial with breadcrumb and task title"
+        validation: "Edit task form updates task correctly"
+
+      - step: 10
+        action: "Add basic CSS styling"
+        file: "app/assets/stylesheets/application.css"
+        features:
+          - "Table styling (borders, padding, hover effects)"
+          - "Form styling (field spacing, button styling)"
+          - "Overdue badge styling (red background, white text)"
+          - "Flash message styling (success green, error red)"
+          - "Basic layout spacing and typography"
+        validation: "UI is clean and readable (not fancy, just functional)"
+
+      - step: 11
+        action: "Test all UI workflows manually"
+        workflows:
+          - "Create, edit, delete project"
+          - "Create, edit, delete task"
+          - "Filter tasks by status"
+          - "Sort tasks by priority and due date"
+          - "Verify overdue badge appears correctly"
+        validation: "All CRUD operations work through UI"
+
+  phase_5_testing_polish:
+    name: "Phase 5: Testing & Polish"
+    status: "not_started"
+    estimated_duration: "Testing and finalization phase"
+    dependencies: ["phase_4_views_ui"]
+    steps:
+      - step: 1
+        action: "Write API request tests"
+        file: "spec/requests/api/tasks_spec.rb"
+        test_cases:
+          - "GET /api/projects/:project_id/tasks returns JSON array"
+          - "Response includes all required fields (id, title, status, priority, due_date, overdue)"
+          - "Status filter works (?status=todo returns only todo tasks)"
+          - "Overdue filter works (?overdue=true returns only overdue tasks)"
+          - "Combining filters works (?status=in_progress&overdue=true)"
+          - "Returns empty array when no tasks match filters"
+        validation: "All API tests pass"
+
+      - step: 2
+        action: "Run full test suite"
+        command: "bundle exec rspec"
+        validation: "All tests pass with good coverage (aim for 90%+ on models)"
+
+      - step: 3
+        action: "Test API endpoints manually with curl or browser"
+        tests:
+          - "curl http://localhost:3000/api/projects/1/tasks"
+          - "curl http://localhost:3000/api/projects/1/tasks?status=todo"
+          - "curl http://localhost:3000/api/projects/1/tasks?overdue=true"
+        validation: "API returns proper JSON responses"
+
+      - step: 4
+        action: "Update README.md with setup instructions"
+        file: "README.md"
+        sections:
+          - "Project description and features"
+          - "Requirements (Ruby 3.3+, Rails 8.0+, PostgreSQL 15+)"
+          - "Setup instructions (bundle install, db:create, db:migrate)"
+          - "How to run the application (rails server)"
+          - "How to run tests (bundle exec rspec)"
+          - "JSON API documentation with examples"
+          - "Example API requests and responses"
+        validation: "README is comprehensive and clear"
+
+      - step: 5
+        action: "Add seed data for demonstration"
+        file: "db/seeds.rb"
+        implementation:
+          - "Create 2-3 sample projects"
+          - "Create 8-10 tasks with varied statuses, priorities, and due dates"
+          - "Include some overdue tasks for testing"
+        command: "rails db:seed"
+        validation: "Sample data loads successfully"
+
+      - step: 6
+        action: "Review code quality and Rails conventions"
+        checklist:
+          - "Controllers are thin (logic in models/scopes)"
+          - "Strong parameters used in all controllers"
+          - "Partials used to DRY up views"
+          - "No N+1 queries (use includes/joins)"
+          - "RESTful routes followed"
+          - "Proper error handling and flash messages"
+        validation: "Code follows Rails best practices"
+
+      - step: 7
+        action: "Final submission checklist review"
+        items:
+          - "✓ Project and Task models with validations"
+          - "✓ CRUD for both models"
+          - "✓ Task filtering by status"
+          - "✓ Task sorting by priority/due_date"
+          - "✓ Overdue detection in UI"
+          - "✓ JSON API endpoint with filtering"
+          - "✓ Model tests (validations, overdue?, scopes)"
+          - "✓ Request tests (API filtering)"
+          - "✓ README with setup and API examples"
+          - "✓ Clean RESTful code"
+        validation: "All assignment requirements met"
+
+      - step: 8
+        action: "Create git commit with completed work"
+        commands:
+          - "git add ."
+          - "git commit -m 'Complete task tracker assignment with all requirements'"
+        validation: "Clean git history with meaningful commit"
+
+  optional_enhancements:
+    name: "Optional Enhancements (Beyond Requirements)"
+    note: "Only implement if time permits and core requirements are complete"
+    ideas:
+      - "Add task search functionality"
+      - "Add project categories/tags"
+      - "Export tasks to CSV"
+      - "Task completion statistics dashboard"
+      - "Pagination for large task lists"
+      - "API pagination and sorting"
+      - "Task comments or notes"
+      - "Email notifications for overdue tasks"
+
+  development_commands:
+    setup:
+      - "bundle install - Install dependencies"
+      - "rails db:create - Create database"
+      - "rails db:migrate - Run migrations"
+      - "rails db:seed - Load sample data"
+
+    development:
+      - "rails server - Start development server (http://localhost:3000)"
+      - "rails console - Open Rails console for debugging"
+      - "rails routes - View all routes"
+      - "rails db:reset - Reset database (drop, create, migrate, seed)"
+
+    testing:
+      - "bundle exec rspec - Run all tests"
+      - "bundle exec rspec spec/models - Run model tests only"
+      - "bundle exec rspec spec/requests - Run request tests only"
+      - "bundle exec rspec spec/models/task_spec.rb:42 - Run specific test at line 42"
+
+    debugging:
+      - "rails db:migrate:status - Check migration status"
+      - "rails db:rollback - Rollback last migration"
+      - "rails stats - View project statistics"
+
+  key_implementation_notes:
+    priority_sorting: "Priority 1 = highest, so sort ascending (1, 2, 3, 4, 5)"
+    due_date_sorting: "Use Arel.sql('due_date IS NULL, due_date ASC') to put NULL dates last"
+    overdue_logic: "Task is overdue only when: due_date < Date.today AND status != 'done'"
+    status_values: "Valid statuses are: 'todo', 'in_progress', 'done' (use snake_case)"
+    scope_design: "Scopes should be chainable and handle nil/blank parameters gracefully"
+    api_response: "Always include computed 'overdue' boolean in API JSON response"
+    n_plus_one: "Use includes(:tasks) when loading projects with task counts"
+    validations: "Test all edge cases: presence, uniqueness, inclusion, numericality"
+    testing_focus: "Prioritize testing business logic (overdue?, scopes) over CRUD"
+
+  success_criteria:
+    - "All tests pass (bundle exec rspec shows all green)"
+    - "No N+1 query warnings in development log"
+    - "All assignment requirements implemented and working"
+    - "Code follows Rails conventions and style guide"
+    - "README provides clear setup and API documentation"
+    - "Application runs without errors on fresh setup"
+    - "UI is functional and user-friendly (styling is minimal but clean)"
+    - "API returns proper JSON with all required fields"
