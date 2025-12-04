@@ -144,7 +144,7 @@ RSpec.describe Task, type: :model do
     context "when sorting by priority_desc" do
       it "orders by priority ascending (1 is highest priority)" do
         tasks = Task.sorted_by("priority_desc")
-        expect(tasks.to_a).to eq([task_priority_1, task_no_date, task_priority_3, task_priority_5])
+        expect(tasks.to_a).to eq([ task_priority_1, task_no_date, task_priority_3, task_priority_5 ])
       end
     end
 
@@ -179,7 +179,7 @@ RSpec.describe Task, type: :model do
 
     it "can chain overdue and sorted_by" do
       tasks = Task.overdue.sorted_by("priority_desc")
-      expect(tasks.to_a).to eq([overdue_todo, overdue_in_progress])
+      expect(tasks.to_a).to eq([ overdue_todo, overdue_in_progress ])
     end
 
     it "can chain all three scopes" do
