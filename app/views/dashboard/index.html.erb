@@ -1,0 +1,193 @@
+<!-- Page Header -->
+<div class="mb-6">
+  <h1 class="text-3xl font-bold text-secondary-900 font-sans">Dashboard</h1>
+  <p class="mt-1 text-sm text-secondary-600">Overview of your projects and tasks</p>
+</div>
+
+<!-- Stats Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+  <!-- Total Projects -->
+  <div class="bg-gradient-to-br from-primary-50 to-white rounded-lg shadow-card p-6 border border-primary-100">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-sm font-medium text-secondary-600">Total Projects</p>
+        <p class="text-3xl font-bold text-secondary-900 mt-2"><%= @total_projects %></p>
+      </div>
+      <div class="p-3 bg-primary-100 rounded-full">
+        <svg class="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Total Tasks -->
+  <div class="bg-gradient-to-br from-secondary-50 to-white rounded-lg shadow-card p-6 border border-secondary-100">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-sm font-medium text-secondary-600">Total Tasks</p>
+        <p class="text-3xl font-bold text-secondary-900 mt-2"><%= @total_tasks %></p>
+      </div>
+      <div class="p-3 bg-secondary-100 rounded-full">
+        <svg class="w-8 h-8 text-secondary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Completed Tasks -->
+  <div class="bg-gradient-to-br from-success-50 to-white rounded-lg shadow-card p-6 border border-success-100">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-sm font-medium text-secondary-600">Completed</p>
+        <p class="text-3xl font-bold text-secondary-900 mt-2"><%= @tasks_done %></p>
+      </div>
+      <div class="p-3 bg-success-100 rounded-full">
+        <svg class="w-8 h-8 text-success-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overdue Tasks -->
+  <div class="bg-gradient-to-br from-danger-50 to-white rounded-lg shadow-card p-6 border border-danger-100">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-sm font-medium text-secondary-600">Overdue</p>
+        <p class="text-3xl font-bold text-secondary-900 mt-2"><%= @overdue_tasks %></p>
+      </div>
+      <div class="p-3 bg-danger-100 rounded-full">
+        <svg class="w-8 h-8 text-danger-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Two Column Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+  <!-- Tasks by Status -->
+  <div class="bg-white rounded-lg shadow-card p-6 border border-secondary-100">
+    <h2 class="text-lg font-bold text-secondary-900 mb-4 font-sans">Tasks by Status</h2>
+    <div class="space-y-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-3 h-3 bg-secondary-400 rounded-full"></div>
+          <span class="text-sm font-medium text-secondary-700">Todo</span>
+        </div>
+        <span class="text-lg font-bold text-secondary-900"><%= @tasks_todo %></span>
+      </div>
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-3 h-3 bg-primary-500 rounded-full"></div>
+          <span class="text-sm font-medium text-secondary-700">In Progress</span>
+        </div>
+        <span class="text-lg font-bold text-secondary-900"><%= @tasks_in_progress %></span>
+      </div>
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-3 h-3 bg-success-500 rounded-full"></div>
+          <span class="text-sm font-medium text-secondary-700">Done</span>
+        </div>
+        <span class="text-lg font-bold text-secondary-900"><%= @tasks_done %></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tasks by Priority -->
+  <div class="bg-white rounded-lg shadow-card p-6 border border-secondary-100">
+    <h2 class="text-lg font-bold text-secondary-900 mb-4 font-sans">Tasks by Priority</h2>
+    <div class="space-y-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-3 h-3 bg-danger-500 rounded-full"></div>
+          <span class="text-sm font-medium text-secondary-700">High Priority (1-2)</span>
+        </div>
+        <span class="text-lg font-bold text-secondary-900"><%= @tasks_high_priority %></span>
+      </div>
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-3 h-3 bg-warning-500 rounded-full"></div>
+          <span class="text-sm font-medium text-secondary-700">Medium Priority (3)</span>
+        </div>
+        <span class="text-lg font-bold text-secondary-900"><%= @tasks_medium_priority %></span>
+      </div>
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-3 h-3 bg-secondary-400 rounded-full"></div>
+          <span class="text-sm font-medium text-secondary-700">Low Priority (4-5)</span>
+        </div>
+        <span class="text-lg font-bold text-secondary-900"><%= @tasks_low_priority %></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Recent Projects -->
+<div class="bg-white rounded-lg shadow-card overflow-hidden border border-secondary-100">
+  <div class="flex items-center justify-between p-6 border-b border-secondary-200">
+    <h2 class="text-lg font-bold text-secondary-900 font-sans">Recent Projects</h2>
+    <%= link_to projects_list_path, class: "btn-primary text-sm" do %>
+      View All Projects
+    <% end %>
+  </div>
+
+  <% if @recent_projects.any? %>
+    <div class="divide-y divide-secondary-100">
+      <% @recent_projects.each do |project| %>
+        <div class="p-6 hover:bg-secondary-50 transition-colors">
+          <div class="flex items-center justify-between">
+            <div class="flex-1">
+              <%= link_to project_path(project), class: "text-lg font-semibold text-secondary-900 hover:text-primary-600 transition-colors" do %>
+                <%= project.name %>
+              <% end %>
+              <% if project.description.present? %>
+                <p class="text-sm text-secondary-600 mt-1"><%= truncate(project.description, length: 80) %></p>
+              <% end %>
+              <div class="flex items-center gap-4 mt-3">
+                <span class="text-sm text-secondary-500">
+                  <%= project.tasks.size %> <%= "task".pluralize(project.tasks.size) %>
+                </span>
+                <% incomplete_count = project.tasks.where.not(status: 'done').size %>
+                <% if incomplete_count > 0 %>
+                  <span class="text-sm text-secondary-500">
+                    <%= incomplete_count %> incomplete
+                  </span>
+                <% else %>
+                  <span class="inline-flex items-center text-xs font-medium text-success-700">
+                    <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                    </svg>
+                    Complete
+                  </span>
+                <% end %>
+              </div>
+            </div>
+            <%= link_to project_path(project), class: "btn-secondary ml-4" do %>
+              View Details
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="p-12 text-center">
+      <svg class="mx-auto h-12 w-12 text-secondary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
+      </svg>
+      <h3 class="mt-2 text-sm font-semibold text-secondary-900">No projects yet</h3>
+      <p class="mt-1 text-sm text-secondary-500">Get started by creating your first project.</p>
+      <div class="mt-6">
+        <%= link_to new_project_path, class: "btn-primary" do %>
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+          </svg>
+          New Project
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
