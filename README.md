@@ -14,21 +14,47 @@ A lightweight task tracker where users can manage projects and their associated 
 
 **Status**: Assignment implementation. See [`docs/requeriments.md`](docs/requeriments.md) for complete specifications.
 
-## Quick Start
+## Requirements
 
+- **Ruby**: 3.3.0 or higher
+- **Rails**: 8.0.0 or higher
+- **PostgreSQL**: 15 or higher
+- **Bundler**: 2.3 or higher
+
+## Setup Instructions
+
+### 1. Clone the repository
 ```bash
-# 1. Install dependencies
-bundle install
-
-# 2. Setup database
-rails db:create db:migrate
-
-# 3. Start development server
-rails server
-
-# 4. Visit application
-# http://localhost:3000
+git clone <repository-url>
+cd task-tracker
 ```
+
+### 2. Install dependencies
+```bash
+bundle install
+```
+
+### 3. Configure database
+Ensure PostgreSQL is running on your system. The application uses the default PostgreSQL connection settings.
+
+### 4. Create and setup database
+```bash
+# Create the database
+rails db:create
+
+# Run migrations to create tables
+rails db:migrate
+
+# (Optional) Load sample data for testing
+rails db:seed
+```
+
+### 5. Start the development server
+```bash
+rails server
+```
+
+The application will be available at [http://localhost:3000](http://localhost:3000)
 
 ## Core Features
 
@@ -44,21 +70,26 @@ rails server
 - Task counts per project (total and incomplete)
 
 ### JSON API
-```bash
-# Get all tasks for a project
-GET /api/projects/:project_id/tasks
 
-# Filter by status
-GET /api/projects/1/tasks?status=todo
+The application provides a RESTful JSON API for accessing task data.
 
-# Get only overdue tasks
-GET /api/projects/1/tasks?overdue=true
+#### Endpoint
 
-# Combine filters
-GET /api/projects/1/tasks?status=in_progress&overdue=true
-```
+**GET** `/api/projects/:project_id/tasks`
 
-**Response format:**
+Returns a JSON array of tasks for the specified project.
+
+#### Query Parameters
+
+| Parameter | Type | Values | Description |
+|-----------|------|--------|-------------|
+| `status` | string | `todo`, `in_progress`, `done` | Filter tasks by status |
+| `overdue` | boolean | `true`, `false` | Filter tasks that are overdue |
+
+Parameters can be combined to create complex queries.
+
+#### Response Format
+
 ```json
 [
   {
@@ -72,23 +103,155 @@ GET /api/projects/1/tasks?status=in_progress&overdue=true
 ]
 ```
 
+#### Response Fields
+
+- `id` - Task ID (integer)
+- `title` - Task title (string)
+- `status` - Current status: `todo`, `in_progress`, or `done` (string)
+- `priority` - Priority level from 1 (highest) to 5 (lowest) (integer)
+- `due_date` - Due date in ISO 8601 format (string, nullable)
+- `overdue` - Computed boolean indicating if task is past due and not done (boolean)
+
+#### Example Requests
+
+```bash
+# Get all tasks for project 1
+curl http://localhost:3000/api/projects/1/tasks
+
+# Get only todo tasks
+curl http://localhost:3000/api/projects/1/tasks?status=todo
+
+# Get only overdue tasks
+curl http://localhost:3000/api/projects/1/tasks?overdue=true
+
+# Get in-progress tasks that are overdue
+curl http://localhost:3000/api/projects/1/tasks?status=in_progress&overdue=true
+```
+
+#### Example Response
+
+```json
+[
+  {
+    "id": 1,
+    "title": "Set up CI pipeline",
+    "status": "in_progress",
+    "priority": 2,
+    "due_date": "2025-12-05",
+    "overdue": false
+  },
+  {
+    "id": 2,
+    "title": "Write documentation",
+    "status": "todo",
+    "priority": 3,
+    "due_date": "2025-12-01",
+    "overdue": true
+  }
+]
+```
+
 ## Development
 
+### Running the Application
+
+```bash
+# Start the Rails server
+rails server
+
+# Or use the shorthand
+rails s
+```
+
+The application will be available at [http://localhost:3000](http://localhost:3000)
+
+### Database Commands
+
+```bash
+# Create database
+rails db:create
+
+# Run migrations
+rails db:migrate
+
+# Load seed data (creates sample projects and tasks)
+rails db:seed
+
+# Reset database (drop, create, migrate, seed)
+rails db:reset
+
+# Rollback last migration
+rails db:rollback
+
+# Check migration status
+rails db:migrate:status
+```
+
 ### Running Tests
+
 ```bash
 # Run full test suite
 bundle exec rspec
 
+# Run only model tests
+bundle exec rspec spec/models
+
+# Run only request tests
+bundle exec rspec spec/requests
+
 # Run specific test file
 bundle exec rspec spec/models/task_spec.rb
+
+# Run specific test at line number
+bundle exec rspec spec/models/task_spec.rb:42
 ```
 
 ### Test Coverage
-Tests cover:
-- Model validations (status, priority, project presence)
-- `overdue?` method behavior
-- Task scopes (`.with_status`, `.overdue`, `.sorted_by`)
-- API endpoint responses and filtering
+
+The test suite includes 81 examples covering:
+- **Model validations**: status inclusion, priority range, project presence, title presence
+- **Task#overdue? method**: future dates, past dates with different statuses, nil dates
+- **Task scopes**: `.with_status`, `.overdue`, `.sorted_by` (priority_desc, due_date_asc)
+- **API endpoints**: JSON responses, status filtering, overdue filtering, combined filters
+
+All tests pass with 0 failures.
+
+### Debugging
+
+```bash
+# Open Rails console
+rails console
+
+# View all routes
+rails routes
+
+# View project statistics
+rails stats
+```
+
+### Sample Data
+
+The application includes comprehensive seed data for testing and demonstration purposes. Running `rails db:seed` will create:
+
+- **10 Projects** across various domains:
+  - Website Redesign, Mobile App Development, Marketing Campaign Q1
+  - API Modernization, Customer Portal, Data Analytics Dashboard
+  - Infrastructure Upgrade, Security Audit, Documentation Overhaul
+  - Employee Onboarding System
+
+- **100 Tasks** with realistic distribution:
+  - **Statuses**: ~50% todo, ~30% in_progress, ~20% done
+  - **Priorities**: 1-5 scale with bias toward medium priorities (2-3)
+  - **Due dates**: Mix of overdue, upcoming (next 7 days), and future tasks
+  - **Variety**: Design, development, testing, DevOps, documentation, management, and bug fix tasks
+
+Task distribution varies by project (4-15 tasks per project) to simulate real-world scenarios.
+
+This seed data is useful for:
+- Testing filtering and sorting functionality with larger datasets
+- Demonstrating the overdue badge feature
+- Testing API endpoints with realistic data
+- Performance testing with pagination scenarios
 
 ## Project Requirements
 

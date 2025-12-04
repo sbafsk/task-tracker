@@ -41,8 +41,9 @@ class ProjectsController < ApplicationController
   end
 
   def destroy
+    project_name = @project.name
     @project.destroy
-    redirect_to projects_url, notice: "Project was successfully destroyed."
+    redirect_to projects_url, notice: "Project '#{project_name}' and all its tasks were successfully deleted."
   end
 
   private
