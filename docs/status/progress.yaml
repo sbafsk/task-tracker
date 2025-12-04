@@ -205,8 +205,17 @@ performance:
 
 setup_checklist:
   - task: "Create Rails app with PostgreSQL"
-    status: "not_started"
+    status: "completed"
     command: "rails new task-tracker --database=postgresql"
+  - task: "Setup RSpec"
+    status: "completed"
+    command: "rails g rspec:install"
+  - task: "Setup CI workflow"
+    status: "completed"
+    details: "Configured GitHub Actions with security scans, linting, and tests"
+  - task: "Fix CI database setup"
+    status: "completed"
+    details: "Changed from db:schema:load to db:migrate to handle missing schema.rb"
   - task: "Generate Project model"
     status: "not_started"
     command: "rails g model Project name:string description:text"
@@ -216,9 +225,6 @@ setup_checklist:
   - task: "Run migrations"
     status: "not_started"
     command: "rails db:migrate"
-  - task: "Setup RSpec"
-    status: "not_started"
-    command: "rails g rspec:install"
 
 submission_checklist:
   - item: "Project and Task models with validations"
@@ -244,10 +250,10 @@ submission_checklist:
 
 next_actions:
   immediate:
-    - "Create Rails app with PostgreSQL database"
     - "Generate Project and Task models"
     - "Add model validations"
     - "Implement Task#overdue? method"
+    - "Write model tests for validations and overdue?"
 
   this_week:
     - "Implement Task scopes (with_status, overdue, sorted_by)"
@@ -256,6 +262,12 @@ next_actions:
     - "Add filtering and sorting to project show page"
     - "Implement JSON API endpoint"
     - "Write comprehensive tests"
+
+  completed:
+    - "Create Rails app with PostgreSQL database"
+    - "Setup RSpec testing framework"
+    - "Configure CI workflow with GitHub Actions"
+    - "Fix CI database setup (db:migrate instead of db:schema:load)"
 
 blockers:
   []
