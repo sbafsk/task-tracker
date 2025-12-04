@@ -14,13 +14,13 @@ Rails.application.routes.draw do
 
   # Web routes for Projects and Tasks
   resources :projects do
-    resources :tasks, only: [:new, :create, :edit, :update, :destroy]
+    resources :tasks, only: [ :new, :create, :edit, :update, :destroy ]
   end
 
   # API routes
   namespace :api do
     resources :projects, only: [] do
-      resources :tasks, only: [:index]
+      resources :tasks, only: [ :index ]
     end
   end
 end
