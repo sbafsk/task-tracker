@@ -217,6 +217,6 @@ tail -f log/development.log
 
 ## Resources
 
-- Assignment requirements: [`requeriments.md`](../../requeriments.md)
+- Assignment requirements: [`docs/requeriments.md`](../../requeriments.md)
 - Coding standards: [`standards/coding.md`](../../standards/coding.md)
 - Current progress: [`docs/status/progress.yaml`](../status/progress.yaml)
