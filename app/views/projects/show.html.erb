@@ -49,55 +49,47 @@
   </div>
 </div>
 
-<!-- Filters Section -->
-<div class="mb-6 bg-white rounded-lg shadow-card p-4">
-  <%= form_with url: project_path(@project), method: :get, class: "flex flex-col sm:flex-row gap-4 items-end" do |f| %>
-    <div class="flex-1">
-      <label for="status" class="block mb-2 text-sm font-medium text-secondary-900">Filter by Status</label>
-      <%= select_tag :status,
-          options_for_select([
-            ['All', ''],
-            ['Todo', 'todo'],
-            ['In Progress', 'in_progress'],
-            ['Done', 'done']
-          ], params[:status]),
-          class: "bg-secondary-50 border border-secondary-300 text-secondary-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5",
-          onchange: "this.form.requestSubmit()" %>
-    </div>
-
-    <div class="flex-1">
-      <label for="sort" class="block mb-2 text-sm font-medium text-secondary-900">Sort by</label>
-      <%= select_tag :sort,
-          options_for_select([
-            ['Default', ''],
-            ['Priority (High to Low)', 'priority_desc'],
-            ['Due Date (Soonest First)', 'due_date_asc']
-          ], params[:sort]),
-          class: "bg-secondary-50 border border-secondary-300 text-secondary-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5",
-          onchange: "this.form.requestSubmit()" %>
-    </div>
-
-    <% if params[:status].present? || params[:sort].present? %>
-      <%= link_to project_path(@project), class: "inline-flex items-center px-4 py-2.5 text-sm font-medium text-center text-secondary-900 bg-white border border-secondary-200 rounded-lg hover:bg-secondary-100 focus:ring-4 focus:outline-none focus:ring-secondary-300" do %>
-        <svg class="w-4 h-4 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-        </svg>
-        Clear Filters
-      <% end %>
-    <% end %>
-  <% end %>
-</div>
-
 <!-- Tasks Section -->
 <div class="bg-white rounded-lg shadow-card overflow-hidden">
   <div class="flex items-center justify-between p-6 border-b border-secondary-200">
-    <h2 class="text-xl font-bold text-secondary-900 font-sans">Tasks</h2>
-    <%= link_to new_project_task_path(@project), class: "btn-primary" do %>
-      <svg class="w-4 h-4 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-      </svg>
-      Add Task
-    <% end %>
+    <div class="flex items-center gap-2">
+      <h2 class="text-xl font-bold text-secondary-900 font-sans">Tasks</h2>
+  </div>
+
+    <div class="flex items-center gap-2">
+      <% if params[:status].present? || params[:sort].present? %>
+        <%= link_to project_path(@project), class: "btn-secondary !p-2", title: "Clear Filters" do %>
+          <p class="text-secondary-600">Clear</p>
+        <% end %>
+      <% end %>
+      <%= form_with url: project_path(@project), method: :get, class: "flex items-center gap-2" do |f| %>
+        <%= select_tag :status,
+            options_for_select([
+              ['All Statuses', ''],
+              ['Todo', 'todo'],
+              ['In Progress', 'in_progress'],
+              ['Done', 'done']
+            ], params[:status]),
+            class: "btn-select",
+            onchange: "this.form.requestSubmit()" %>
+
+        <%= select_tag :sort,
+            options_for_select([
+              ['Sort By', ''],
+              ['Priority ↓', 'priority_desc'],
+              ['Due Date ↑', 'due_date_asc']
+            ], params[:sort]),
+            class: "btn-select",
+            onchange: "this.form.requestSubmit()" %>
+      <% end %>
+
+      <%= link_to new_project_task_path(@project), class: "btn-primary" do %>
+        <svg class="w-4 h-4 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+        </svg>
+        Add Task
+      <% end %>
+    </div>
   </div>
 
   <% if @tasks.any? %>
@@ -156,7 +148,7 @@
                   5 => 'bg-secondary-100 text-secondary-800'
                 } %>
                 <span class="inline-flex items-center <%= priority_colors[task.priority] %> text-xs font-medium px-2.5 py-0.5 rounded-full">
-                  <%= task.priority %>
+                  <%= priority_text(task.priority) %>
                 </span>
               </td>
               <td class="px-6 py-4">

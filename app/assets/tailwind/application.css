@@ -91,6 +91,36 @@
     background-color: #dc2626;
   }
 
+  /* Button-styled select */
+  .btn-select {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 2.5rem 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: white;
+    background-color: #3b82f6;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    appearance: none;
+    transition: background-color 0.2s;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='white' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+  }
+
+  .btn-select:hover {
+    background-color: #2563eb;
+  }
+
+  .btn-select:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+  }
+
   /* Badge variants */
   .badge {
     display: inline-flex;
