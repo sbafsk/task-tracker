@@ -28,8 +28,9 @@ class TasksController < ApplicationController
   end
 
   def destroy
+    task_title = @task.title
     @task.destroy
-    redirect_to @project, notice: "Task was successfully destroyed."
+    redirect_to @project, notice: "Task '#{task_title}' was successfully deleted."
   end
 
   private

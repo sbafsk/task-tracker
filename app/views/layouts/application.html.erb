@@ -43,5 +43,17 @@
     <main>
       <%= yield %>
     </main>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal">
+      <div class="modal-content">
+        <h2>Confirm Deletion</h2>
+        <p id="deleteMessage"></p>
+        <div class="modal-actions">
+          <button id="cancelDelete" class="btn btn-secondary">Cancel</button>
+          <button id="confirmDelete" class="btn btn-danger">Confirm</button>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
