@@ -13,6 +13,7 @@
 **Development**:
 - [`docs/guides/development.md`](guides/development.md) - Setup and workflow
 - [`docs/guides/testing.md`](guides/testing.md) - Testing approach
+- [`docs/guides/deployment.md`](guides/deployment.md) - Render.com deployment
 - [`standards/coding.md`](../standards/coding.md) - Code patterns and examples
 
 **AI Context**:
@@ -50,20 +51,13 @@
 4. **Overdue Detection**: Automatic overdue badge
 5. **JSON API**: Read-only API with filtering
 
-## Daily Commands
+## Common Commands
 
 ```bash
-# Start server
-rails server
-
-# Run console
-rails console
-
-# Run tests
-bundle exec rspec
-
-# Run specific test
-bundle exec rspec spec/models/task_spec.rb
+rails server                           # Start server
+rails console                          # Rails console
+bundle exec rspec                      # Run tests
+bin/rails db:migrate                   # Run migrations
 ```
 
 ## Documentation Structure

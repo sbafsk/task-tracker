@@ -151,43 +151,7 @@ curl http://localhost:3000/api/projects/1/tasks?status=in_progress&overdue=true
 ]
 ```
 
-## Development
-
-### Running the Application
-
-```bash
-# Start the Rails server
-rails server
-
-# Or use the shorthand
-rails s
-```
-
-The application will be available at [http://localhost:3000](http://localhost:3000)
-
-### Database Commands
-
-```bash
-# Create database
-rails db:create
-
-# Run migrations
-rails db:migrate
-
-# Load seed data (creates sample projects and tasks)
-rails db:seed
-
-# Reset database (drop, create, migrate, seed)
-rails db:reset
-
-# Rollback last migration
-rails db:rollback
-
-# Check migration status
-rails db:migrate:status
-```
-
-### Running Tests
+## Running Tests
 
 ```bash
 # Run full test suite
@@ -216,51 +180,13 @@ The test suite includes 81 examples covering:
 
 All tests pass with 0 failures.
 
-### Debugging
+## Additional Resources
 
-```bash
-# Open Rails console
-rails console
-
-# View all routes
-rails routes
-
-# View project statistics
-rails stats
-```
-
-### Sample Data
-
-The application includes comprehensive seed data for testing and demonstration purposes. Running `rails db:seed` will create:
-
-- **10 Projects** across various domains:
-  - Website Redesign, Mobile App Development, Marketing Campaign Q1
-  - API Modernization, Customer Portal, Data Analytics Dashboard
-  - Infrastructure Upgrade, Security Audit, Documentation Overhaul
-  - Employee Onboarding System
-
-- **100 Tasks** with realistic distribution:
-  - **Statuses**: ~50% todo, ~30% in_progress, ~20% done
-  - **Priorities**: 1-5 scale with bias toward medium priorities (2-3)
-  - **Due dates**: Mix of overdue, upcoming (next 7 days), and future tasks
-  - **Variety**: Design, development, testing, DevOps, documentation, management, and bug fix tasks
-
-Task distribution varies by project (4-15 tasks per project) to simulate real-world scenarios.
-
-This seed data is useful for:
-- Testing filtering and sorting functionality with larger datasets
-- Demonstrating the overdue badge feature
-- Testing API endpoints with realistic data
-- Performance testing with pagination scenarios
-
-## Project Requirements
-
-See [`docs/requeriments.md`](requeriments.md) for:
-- Complete functional requirements
-- Data model specifications
-- UI requirements
-- API specifications
-- Testing requirements
+- **Development Guide**: [docs/guides/development.md](docs/guides/development.md) - Workflow, debugging
+- **Testing Guide**: [docs/guides/testing.md](docs/guides/testing.md) - RSpec, factories, coverage
+- **Deployment Guide**: [docs/guides/deployment.md](docs/guides/deployment.md) - Deploy to Render.com
+- **Requirements**: [docs/requeriments.md](docs/requeriments.md) - Complete assignment specifications
+- **Documentation Index**: [docs/index.md](docs/index.md) - All documentation links
 
 ## Routes
 
