@@ -1,27 +1,33 @@
-<%= form_with(model: project, local: true, class: "form") do |f| %>
+<%= form_with(model: project, local: true, class: "space-y-6") do |f| %>
   <% if project.errors.any? %>
-    <div class="error-messages">
-      <h3><%= pluralize(project.errors.count, "error") %> prohibited this project from being saved:</h3>
-      <ul>
-        <% project.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
+    <div class="flex p-4 mb-4 text-sm text-danger-800 rounded-lg bg-danger-50 border border-danger-200" role="alert">
+      <svg class="flex-shrink-0 inline w-4 h-4 me-3 mt-[2px]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+        <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+      </svg>
+      <div>
+        <span class="font-medium"><%= pluralize(project.errors.count, "error") %> prohibited this project from being saved:</span>
+        <ul class="mt-1.5 list-disc list-inside">
+          <% project.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
     </div>
   <% end %>
 
-  <div class="form-group">
-    <%= f.label :name, "Project Name" %>
-    <%= f.text_field :name, class: "form-control", placeholder: "Enter project name", required: true %>
+  <div>
+    <%= f.label :name, "Project Name", class: "block mb-2 text-sm font-medium text-secondary-900" %>
+    <%= f.text_field :name, class: "bg-secondary-50 border border-secondary-300 text-secondary-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5", placeholder: "e.g., Website Redesign", required: true %>
   </div>
 
-  <div class="form-group">
-    <%= f.label :description, "Description (Optional)" %>
-    <%= f.text_area :description, class: "form-control", placeholder: "Enter project description", rows: 5 %>
+  <div>
+    <%= f.label :description, "Description", class: "block mb-2 text-sm font-medium text-secondary-900" %>
+    <%= f.text_area :description, class: "bg-secondary-50 border border-secondary-300 text-secondary-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5", placeholder: "Provide a brief description of the project...", rows: 5 %>
+    <p class="mt-2 text-sm text-secondary-500">Optional: Add more context about this project</p>
   </div>
 
-  <div class="form-actions">
-    <%= f.submit class: "btn btn-primary" %>
-    <%= link_to "Cancel", project.persisted? ? project_path(project) : projects_path, class: "btn btn-link" %>
+  <div class="flex items-center gap-3 pt-4 border-t border-secondary-200">
+    <%= f.submit class: "btn-primary" %>
+    <%= link_to "Cancel", project.persisted? ? project_path(project) : projects_path, class: "btn-secondary" %>
   </div>
 <% end %>

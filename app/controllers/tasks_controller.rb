@@ -3,7 +3,7 @@ class TasksController < ApplicationController
   before_action :set_task, only: [ :edit, :update, :destroy ]
 
   def new
-    @task = @project.tasks.build
+    @task = @project.tasks.build(priority: 3) # Set default priority to medium
   end
 
   def create

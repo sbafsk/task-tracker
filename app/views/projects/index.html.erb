@@ -1,36 +1,120 @@
-<div class="projects-index">
-  <div class="page-header">
-    <h1>Projects</h1>
-    <%= link_to "New Project", new_project_path, class: "btn btn-primary" %>
+<!-- Page Header -->
+<div class="mb-6">
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <div>
+      <h1 class="text-3xl font-bold text-secondary-900 font-sans">Projects</h1>
+      <p class="mt-1 text-sm text-secondary-600">Manage and organize your project tasks efficiently</p>
+    </div>
+    <%= link_to new_project_path, class: "btn-primary" do %>
+      <svg class="w-4 h-4 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+      </svg>
+      New Project
+    <% end %>
   </div>
-
-  <% if @projects.any? %>
-    <table class="projects-table">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Description</th>
-          <th>Total Tasks</th>
-          <th>Incomplete Tasks</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @projects.each do |project| %>
-          <tr>
-            <td><%= link_to project.name, project_path(project), class: "project-link" %></td>
-            <td><%= truncate(project.description, length: 100) %></td>
-            <td><%= project.tasks.size %></td>
-            <td><%= project.tasks.where.not(status: 'done').size %></td>
-            <td class="actions">
-              <%= link_to "Edit", edit_project_path(project), class: "btn btn-secondary" %>
-              <%= button_to "Delete", project_path(project), method: :delete, data: { turbo_confirm: "Confirm you want to delete '#{project.name}'? This will also delete all tasks in this project." }, class: "btn btn-danger" %>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  <% else %>
-    <p class="empty-state">No projects yet. <%= link_to "Create your first project", new_project_path %> to get started!</p>
-  <% end %>
 </div>
+
+<% if @projects.any? %>
+  <!-- Projects Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <% @projects.each do |project| %>
+      <div class="card card-hover">
+        <div class="p-6">
+          <!-- Project Header -->
+          <div class="flex items-start justify-between mb-4">
+            <%= link_to project_path(project), class: "flex-1" do %>
+              <h3 class="text-xl font-bold text-secondary-900 hover:text-primary-600 transition-colors font-sans">
+                <%= project.name %>
+              </h3>
+            <% end %>
+
+            <!-- Dropdown Menu -->
+            <button type="button" data-dropdown-toggle="dropdown-<%= project.id %>" class="inline-flex items-center p-2 text-sm font-medium text-center text-secondary-900 bg-white rounded-lg hover:bg-secondary-100 focus:ring-4 focus:outline-none focus:ring-secondary-200">
+              <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 3">
+                <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>
+              </svg>
+            </button>
+
+            <!-- Dropdown menu -->
+            <div id="dropdown-<%= project.id %>" class="z-10 hidden bg-white divide-y divide-secondary-100 rounded-lg shadow w-44">
+              <ul class="py-2 text-sm text-secondary-700">
+                <li>
+                  <%= link_to edit_project_path(project), class: "flex items-center px-4 py-2 hover:bg-secondary-100" do %>
+                    <svg class="w-4 h-4 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
+                      <path d="M12.687 14.408a3.01 3.01 0 0 1-1.533.821l-3.566.713a3 3 0 0 1-3.53-3.53l.713-3.566a3.01 3.01 0 0 1 .821-1.533L10.905 2H2.167A2.169 2.169 0 0 0 0 4.167v11.666A2.169 2.169 0 0 0 2.167 18h11.666A2.169 2.169 0 0 0 16 15.833V11.1l-3.313 3.308Zm5.53-9.065.546-.546a2.518 2.518 0 0 0 0-3.56 2.576 2.576 0 0 0-3.559 0l-.547.547 3.56 3.56Z"/>
+                      <path d="M13.243 3.2 7.359 9.081a.5.5 0 0 0-.136.256L6.51 12.9a.5.5 0 0 0 .59.59l3.566-.713a.5.5 0 0 0 .255-.136L16.8 6.757 13.243 3.2Z"/>
+                    </svg>
+                    Edit
+                  <% end %>
+                </li>
+                <li>
+                  <%= button_to project_path(project), method: :delete, data: { turbo_confirm: "Confirm you want to delete '#{project.name}'? This will also delete all tasks in this project." }, class: "flex items-center w-full px-4 py-2 hover:bg-danger-50 text-danger-600" do %>
+                    <svg class="w-4 h-4 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
+                      <path d="M17 4h-4V2a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v2H1a1 1 0 0 0 0 2h1v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6h1a1 1 0 1 0 0-2ZM7 2h4v2H7V2Zm1 14a1 1 0 1 1-2 0V8a1 1 0 0 1 2 0v8Zm4 0a1 1 0 1 1-2 0V8a1 1 0 0 1 2 0v8Z"/>
+                    </svg>
+                    Delete
+                  <% end %>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Project Description -->
+          <% if project.description.present? %>
+            <p class="text-sm text-secondary-600 mb-4 line-clamp-2">
+              <%= project.description %>
+            </p>
+          <% else %>
+            <p class="text-sm text-secondary-400 italic mb-4">No description provided</p>
+          <% end %>
+
+          <!-- Project Stats -->
+          <div class="flex items-center gap-4 pt-4 border-t border-secondary-100">
+            <div class="flex items-center gap-2">
+              <svg class="w-5 h-5 text-secondary-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+              </svg>
+              <span class="text-sm font-medium text-secondary-700">
+                <%= project.tasks.size %> <%= "task".pluralize(project.tasks.size) %>
+              </span>
+            </div>
+
+            <% incomplete_count = project.tasks.where.not(status: 'done').size %>
+            <% if incomplete_count > 0 %>
+              <div class="flex items-center gap-2">
+                <span class="inline-flex items-center justify-center w-6 h-6 text-xs font-semibold text-white bg-primary-600 rounded-full">
+                  <%= incomplete_count %>
+                </span>
+                <span class="text-sm text-secondary-600">incomplete</span>
+              </div>
+            <% else %>
+              <div class="flex items-center gap-2">
+                <svg class="w-5 h-5 text-success-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
+                </svg>
+                <span class="text-sm font-medium text-success-600">Complete</span>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <!-- Empty State -->
+  <div class="text-center py-12 bg-white rounded-lg shadow-card">
+    <svg class="mx-auto h-12 w-12 text-secondary-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+    </svg>
+    <h3 class="mt-2 text-sm font-semibold text-secondary-900">No projects</h3>
+    <p class="mt-1 text-sm text-secondary-500">Get started by creating a new project.</p>
+    <div class="mt-6">
+      <%= link_to new_project_path, class: "btn-primary" do %>
+        <svg class="w-4 h-4 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+        </svg>
+        New Project
+      <% end %>
+    </div>
+  </div>
+<% end %>
