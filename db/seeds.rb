@@ -144,7 +144,7 @@ projects.each_with_index do |project, project_index|
     status = weighted_status
 
     # Priority (1-5, with bias toward 2-3)
-    priority = [1, 2, 2, 3, 3, 3, 4, 4, 5].sample
+    priority = [ 1, 2, 2, 3, 3, 3, 4, 4, 5 ].sample
 
     # Due date logic
     due_date = if rand < 0.1 # 10% have no due date
