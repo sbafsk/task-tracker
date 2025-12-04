@@ -2,14 +2,14 @@
 
 ## Context Loading Priority
 
-1. **Assignment Requirements**: `requeriments.md` (always load first)
+1. **Assignment Requirements**: `docs/requeriments.md` (always load first)
 2. **Current Status**: `docs/status/progress.yaml` (for progress tracking)
 3. **Project Context**: `.ai/context.yaml` (for project metadata)
 4. **Coding Standards**: `standards/coding.md` (for code generation)
 
 ## Query Routing
 
-- **Assignment requirements**: `requeriments.md`
+- **Assignment requirements**: `docs/requeriments.md`
 - **Current progress**: `docs/status/progress.yaml`
 - **Project overview**: `README.md`
 - **Coding standards**: `standards/coding.md`

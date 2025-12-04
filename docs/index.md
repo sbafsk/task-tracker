@@ -7,7 +7,7 @@
 ## Quick Links
 
 **Assignment**:
-- [`requeriments.md`](../requeriments.md) - Complete assignment requirements
+- [`docs/requeriments.md`](../requeriments.md) - Complete assignment requirements
 - [`README.md`](../README.md) - Project overview and API examples
 
 **Development**:
@@ -69,7 +69,7 @@ bundle exec rspec spec/models/task_spec.rb
 ## Documentation Structure
 
 ### For Developers
-- Start with `requeriments.md` for requirements
+- Start with `docs/requeriments.md` for requirements
 - Check `docs/status/progress.yaml` for current progress
 - Follow patterns in `standards/coding.md`
 - Use `docs/guides/development.md` for workflow

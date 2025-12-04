@@ -19,7 +19,7 @@ Generate code following Rails assignment patterns and conventions.
 
 Follow these standards:
 - `standards/coding.md` - Coding conventions
-- `requeriments.md` - Assignment requirements
+- `docs/requeriments.md` - Assignment requirements
 
 ## Examples
 
