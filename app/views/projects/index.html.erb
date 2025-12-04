@@ -1,4 +1,36 @@
-<div>
-  <h1 class="font-bold text-4xl">Projects#index</h1>
-  <p>Find me in app/views/projects/index.html.erb</p>
+<div class="projects-index">
+  <div class="page-header">
+    <h1>Projects</h1>
+    <%= link_to "New Project", new_project_path, class: "btn btn-primary" %>
+  </div>
+
+  <% if @projects.any? %>
+    <table class="projects-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Total Tasks</th>
+          <th>Incomplete Tasks</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @projects.each do |project| %>
+          <tr>
+            <td><%= link_to project.name, project_path(project), class: "project-link" %></td>
+            <td><%= truncate(project.description, length: 100) %></td>
+            <td><%= project.tasks.size %></td>
+            <td><%= project.tasks.where.not(status: 'done').size %></td>
+            <td class="actions">
+              <%= link_to "Edit", edit_project_path(project), class: "btn btn-secondary" %>
+              <%= button_to "Delete", project_path(project), method: :delete, data: { confirm: "Are you sure? This will also delete all tasks in this project." }, class: "btn btn-danger" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p class="empty-state">No projects yet. <%= link_to "Create your first project", new_project_path %> to get started!</p>
+  <% end %>
 </div>

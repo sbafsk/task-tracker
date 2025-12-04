@@ -1,4 +1,10 @@
-<div>
-  <h1 class="font-bold text-4xl">Tasks#edit</h1>
-  <p>Find me in app/views/tasks/edit.html.erb</p>
+<div class="form-page">
+  <div class="breadcrumb">
+    <%= link_to "Projects", projects_path %> /
+    <%= link_to @project.name, project_path(@project) %> /
+    Edit Task
+  </div>
+
+  <h1>Edit Task: <%= @task.title %></h1>
+  <%= render "form", project: @project, task: @task %>
 </div>
