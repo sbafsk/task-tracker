@@ -1,0 +1,24 @@
+databases:
+  - name: task-tracker-db
+    databaseName: task_tracker_production
+    user: task_tracker
+    plan: free
+
+services:
+  - type: web
+    name: task-tracker
+    runtime: ruby
+    plan: free
+    buildCommand: "./bin/render-build.sh"
+    startCommand: "bin/rails server"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: task-tracker-db
+          property: connectionString
+      - key: RAILS_MASTER_KEY
+        sync: false
+      - key: WEB_CONCURRENCY
+        value: 2
+      - key: RAILS_ENV
+        value: production

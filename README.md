@@ -21,40 +21,17 @@ A lightweight task tracker where users can manage projects and their associated 
 - **PostgreSQL**: 15 or higher
 - **Bundler**: 2.3 or higher
 
-## Setup Instructions
+## Quick Start
 
-### 1. Clone the repository
-```bash
-git clone <repository-url>
-cd task-tracker
-```
-
-### 2. Install dependencies
 ```bash
 bundle install
-```
-
-### 3. Configure database
-Ensure PostgreSQL is running on your system. The application uses the default PostgreSQL connection settings.
-
-### 4. Create and setup database
-```bash
-# Create the database
-rails db:create
-
-# Run migrations to create tables
-rails db:migrate
-
-# (Optional) Load sample data for testing
-rails db:seed
-```
-
-### 5. Start the development server
-```bash
+rails db:create db:migrate db:seed
 rails server
 ```
 
-The application will be available at [http://localhost:3000](http://localhost:3000)
+Visit [http://localhost:3000](http://localhost:3000)
+
+See [docs/guides/development.md](docs/guides/development.md) for detailed setup instructions.
 
 ## Core Features
 
@@ -153,114 +130,22 @@ curl http://localhost:3000/api/projects/1/tasks?status=in_progress&overdue=true
 
 ## Development
 
-### Running the Application
-
 ```bash
-# Start the Rails server
-rails server
-
-# Or use the shorthand
-rails s
+rails server                    # Start server
+rails console                   # Rails console
+bundle exec rspec               # Run tests
+rails routes                    # View routes
 ```
 
-The application will be available at [http://localhost:3000](http://localhost:3000)
+**Full guides**:
+- [Development](docs/guides/development.md) - Setup, workflow, debugging
+- [Testing](docs/guides/testing.md) - RSpec, factories, test coverage
+- [Deployment](docs/guides/deployment.md) - Deploy to Render.com
 
-### Database Commands
+## Documentation
 
-```bash
-# Create database
-rails db:create
-
-# Run migrations
-rails db:migrate
-
-# Load seed data (creates sample projects and tasks)
-rails db:seed
-
-# Reset database (drop, create, migrate, seed)
-rails db:reset
-
-# Rollback last migration
-rails db:rollback
-
-# Check migration status
-rails db:migrate:status
-```
-
-### Running Tests
-
-```bash
-# Run full test suite
-bundle exec rspec
-
-# Run only model tests
-bundle exec rspec spec/models
-
-# Run only request tests
-bundle exec rspec spec/requests
-
-# Run specific test file
-bundle exec rspec spec/models/task_spec.rb
-
-# Run specific test at line number
-bundle exec rspec spec/models/task_spec.rb:42
-```
-
-### Test Coverage
-
-The test suite includes 81 examples covering:
-- **Model validations**: status inclusion, priority range, project presence, title presence
-- **Task#overdue? method**: future dates, past dates with different statuses, nil dates
-- **Task scopes**: `.with_status`, `.overdue`, `.sorted_by` (priority_desc, due_date_asc)
-- **API endpoints**: JSON responses, status filtering, overdue filtering, combined filters
-
-All tests pass with 0 failures.
-
-### Debugging
-
-```bash
-# Open Rails console
-rails console
-
-# View all routes
-rails routes
-
-# View project statistics
-rails stats
-```
-
-### Sample Data
-
-The application includes comprehensive seed data for testing and demonstration purposes. Running `rails db:seed` will create:
-
-- **10 Projects** across various domains:
-  - Website Redesign, Mobile App Development, Marketing Campaign Q1
-  - API Modernization, Customer Portal, Data Analytics Dashboard
-  - Infrastructure Upgrade, Security Audit, Documentation Overhaul
-  - Employee Onboarding System
-
-- **100 Tasks** with realistic distribution:
-  - **Statuses**: ~50% todo, ~30% in_progress, ~20% done
-  - **Priorities**: 1-5 scale with bias toward medium priorities (2-3)
-  - **Due dates**: Mix of overdue, upcoming (next 7 days), and future tasks
-  - **Variety**: Design, development, testing, DevOps, documentation, management, and bug fix tasks
-
-Task distribution varies by project (4-15 tasks per project) to simulate real-world scenarios.
-
-This seed data is useful for:
-- Testing filtering and sorting functionality with larger datasets
-- Demonstrating the overdue badge feature
-- Testing API endpoints with realistic data
-- Performance testing with pagination scenarios
-
-## Project Requirements
-
-See [`docs/requeriments.md`](requeriments.md) for:
-- Complete functional requirements
-- Data model specifications
-- UI requirements
-- API specifications
-- Testing requirements
+- [Requirements](docs/requeriments.md) - Complete assignment specifications
+- [Documentation Index](docs/index.md) - All documentation links
 
 ## Routes
 
