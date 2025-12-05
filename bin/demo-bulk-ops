@@ -1,0 +1,43 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Demo script for Solid Queue bulk operations
+
+require "pathname"
+require "fileutils"
+
+APP_ROOT = Pathname.new File.expand_path("../..", __FILE__)
+
+def system!(*args)
+  puts "Running: #{args.join(' ')}"
+  system(*args) || abort("\n== Command failed ==")
+end
+
+FileUtils.chdir APP_ROOT do
+  puts "\n== Solid Queue Bulk Operations Demo =="
+  puts "=" * 50
+
+  # Check if Backlog project exists
+  backlog = `bundle exec rails runner "p = Project.find_by(name: 'Backlog'); puts p.id if p"`.strip
+
+  if backlog.empty?
+    puts "\n📦 Creating Backlog project with 10,000 tasks..."
+    system! "bundle exec rails db:seed:backlog"
+    backlog = `bundle exec rails runner "p = Project.find_by(name: 'Backlog'); puts p.id if p"`.strip
+  else
+    task_count = `bundle exec rails runner "p = Project.find(#{backlog}); puts p.tasks.count"`.strip
+    puts "\n✓ Backlog project already exists (ID: #{backlog}, Tasks: #{task_count})"
+  end
+
+  puts "\n== Demo Instructions =="
+  puts "=" * 50
+  puts "1. Start the server: bin/dev"
+  puts "2. Visit: http://localhost:3000/projects/#{backlog}"
+  puts "3. Try bulk operations:"
+  puts "   - Update status (e.g., TODO → IN_PROGRESS)"
+  puts "   - Change priorities (e.g., set all to priority 5)"
+  puts "   - Update due dates (e.g., add 7 days)"
+  puts "4. Monitor jobs: http://localhost:3000/jobs"
+  puts "=" * 50
+  puts "\n🚀 Ready! Run 'bin/dev' to start the server.\n\n"
+end
