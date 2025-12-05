@@ -12,9 +12,17 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "projects#index"
 
+  # Mission Control Jobs dashboard (development only, no auth required)
+  mount MissionControl::Jobs::Engine, at: "/jobs" if Rails.env.development?
+
   # Web routes for Projects and Tasks
   resources :projects do
     resources :tasks, only: [ :new, :create, :edit, :update, :destroy ]
+    member do
+      post :bulk_update_status
+      post :bulk_update_priority
+      post :bulk_update_due_date
+    end
   end
 
   # API routes
