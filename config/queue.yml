@@ -10,6 +10,12 @@ default: &default
 
 development:
   <<: *default
+  # Increased threads for better bulk operation performance in development
+  workers:
+    - queues: "*"
+      threads: 5
+      processes: <%= ENV.fetch("JOB_CONCURRENCY", 2) %>
+      polling_interval: 0.1
 
 test:
   <<: *default

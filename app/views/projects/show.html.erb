@@ -1,4 +1,4 @@
-<div class="project-show">
+<div class="project-show" data-controller="bulk-operations" data-bulk-operations-project-id-value="<%= @project.id %>">
   <div class="page-header">
     <div>
       <h1><%= @project.name %></h1>
@@ -8,9 +8,110 @@
     </div>
     <div class="actions">
       <%= link_to "Edit Project", edit_project_path(@project), class: "btn btn-secondary" %>
+      <%= link_to "Jobs Dashboard", "/jobs", class: "btn btn-secondary", target: "_blank" if Rails.env.development? %>
       <%= button_to "Delete Project", project_path(@project), method: :delete, data: { turbo_confirm: "Confirm you want to delete '#{@project.name}'? This will also delete all tasks in this project." }, class: "btn btn-danger" %>
     </div>
   </div>
+
+  <!-- Bulk Operations Section -->
+  <% if @project.tasks.count > 100 %>
+    <div class="bulk-operations-section">
+      <h2>Bulk Operations</h2>
+      <p class="text-sm text-gray-600">Perform mass updates on tasks using background jobs</p>
+
+      <div class="bulk-ops-container">
+        <!-- Status Update -->
+        <div class="bulk-op-card">
+          <h3>Update Status</h3>
+          <div class="form-group">
+            <label>Filter by Current Status:</label>
+            <select data-bulk-operations-target="statusFilter" class="form-select">
+              <option value="">All tasks</option>
+              <option value="todo">Todo</option>
+              <option value="in_progress">In Progress</option>
+              <option value="done">Done</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>New Status:</label>
+            <select data-bulk-operations-target="newStatus" class="form-select">
+              <option value="todo">Todo</option>
+              <option value="in_progress">In Progress</option>
+              <option value="done">Done</option>
+            </select>
+          </div>
+          <button data-action="click->bulk-operations#updateStatus" class="btn btn-primary">
+            Execute Status Update
+          </button>
+        </div>
+
+        <!-- Priority Update -->
+        <div class="bulk-op-card">
+          <h3>Update Priority</h3>
+          <div class="form-group">
+            <label>Filter by Status:</label>
+            <select data-bulk-operations-target="priorityStatusFilter" class="form-select">
+              <option value="">All tasks</option>
+              <option value="todo">Todo</option>
+              <option value="in_progress">In Progress</option>
+              <option value="done">Done</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>New Priority (1-5):</label>
+            <select data-bulk-operations-target="newPriority" class="form-select">
+              <option value="1">1 - Lowest</option>
+              <option value="2">2 - Low</option>
+              <option value="3" selected>3 - Medium</option>
+              <option value="4">4 - High</option>
+              <option value="5">5 - Highest</option>
+            </select>
+          </div>
+          <button data-action="click->bulk-operations#updatePriority" class="btn btn-primary">
+            Execute Priority Update
+          </button>
+        </div>
+
+        <!-- Due Date Update -->
+        <div class="bulk-op-card">
+          <h3>Update Due Date</h3>
+          <div class="form-group">
+            <label>Filter by Status:</label>
+            <select data-bulk-operations-target="dueDateStatusFilter" class="form-select">
+              <option value="">All tasks</option>
+              <option value="todo">Todo</option>
+              <option value="in_progress">In Progress</option>
+              <option value="done">Done</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Operation:</label>
+            <select data-bulk-operations-target="dueDateOperation" class="form-select">
+              <option value="tomorrow">Set to Tomorrow</option>
+              <option value="next_week">Set to Next Week</option>
+              <option value="add_7_days">Add 7 Days</option>
+              <option value="add_14_days">Add 14 Days</option>
+              <option value="add_30_days">Add 30 Days</option>
+              <option value="clear">Clear Due Date</option>
+            </select>
+          </div>
+          <button data-action="click->bulk-operations#updateDueDate" class="btn btn-primary">
+            Execute Due Date Update
+          </button>
+        </div>
+      </div>
+
+      <!-- Progress Display -->
+      <div data-bulk-operations-target="progressContainer" class="progress-container hidden">
+        <h3>Operation Progress</h3>
+        <div class="progress-bar">
+          <div data-bulk-operations-target="progressBar" class="progress-bar-fill"></div>
+        </div>
+        <p data-bulk-operations-target="progressMessage" class="progress-message"></p>
+        <p data-bulk-operations-target="progressStats" class="progress-stats"></p>
+      </div>
+    </div>
+  <% end %>
 
   <div class="filters-section">
     <%= form_with url: project_path(@project), method: :get, class: "filters-form" do |f| %>

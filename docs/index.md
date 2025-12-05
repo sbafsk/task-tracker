@@ -14,6 +14,8 @@
 - [`docs/guides/development.md`](guides/development.md) - Setup and workflow
 - [`docs/guides/testing.md`](guides/testing.md) - Testing approach
 - [`docs/guides/deployment.md`](guides/deployment.md) - Render.com deployment
+- [`docs/guides/bulk-operations.md`](guides/bulk-operations.md) - Solid Queue bulk operations demo
+- [`docs/guides/bulk-operations-implementation.md`](guides/bulk-operations-implementation.md) - Implementation details
 - [`standards/coding.md`](../standards/coding.md) - Code patterns and examples
 
 **AI Context**:
@@ -50,14 +52,18 @@
 3. **Sorting**: Sort by priority (high→low) or due date (soonest→latest)
 4. **Overdue Detection**: Automatic overdue badge
 5. **JSON API**: Read-only API with filtering
+6. **Bulk Operations**: Mass updates with Solid Queue (demo feature)
 
 ## Common Commands
 
 ```bash
-rails server                           # Start server
+bin/dev                                # Start server with Solid Queue
+rails server                           # Start server only
 rails console                          # Rails console
 bundle exec rspec                      # Run tests
 bin/rails db:migrate                   # Run migrations
+bin/rails db:seed:backlog              # Create demo project with 10K tasks
+bin/demo-bulk-ops                      # Show bulk operations demo instructions
 ```
 
 ## Documentation Structure
