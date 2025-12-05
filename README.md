@@ -51,8 +51,10 @@ rails db:seed
 
 ### 5. Start the development server
 ```bash
-rails server
+bin/dev
 ```
+
+This starts the Rails server, Tailwind CSS watcher, and Solid Queue worker process.
 
 The application will be available at [http://localhost:3000](http://localhost:3000)
 
@@ -68,6 +70,12 @@ The application will be available at [http://localhost:3000](http://localhost:30
 - Task sorting by priority (high to low) or due date (soonest first)
 - Overdue badge when task is past due and not done
 - Task counts per project (total and incomplete)
+- **Bulk Operations** (for projects with 100+ tasks):
+  - Mass status updates with filters
+  - Mass priority updates
+  - Mass due date updates
+  - Real-time progress tracking via Action Cable
+  - Background job processing with Solid Queue
 
 ### JSON API
 
@@ -180,8 +188,43 @@ The test suite includes 81 examples covering:
 
 All tests pass with 0 failures.
 
+## Bulk Operations Demo (Solid Queue)
+
+This application includes a **technical demonstration** of Solid Queue for async job processing.
+
+### Quick Start
+
+1. Create a project with 10,000 tasks:
+```bash
+bundle exec rails db:seed:backlog
+```
+
+2. Start the server (includes Solid Queue worker):
+```bash
+bin/dev
+```
+
+3. Visit the Backlog project and try bulk operations:
+   - Update status for thousands of tasks
+   - Change priorities in bulk
+   - Mass update due dates
+   - Watch real-time progress via Action Cable
+
+4. Monitor jobs at [http://localhost:3000/jobs](http://localhost:3000/jobs) (Mission Control Jobs dashboard)
+
+### Features Demonstrated
+
+- **Batch Processing**: Updates 10,000+ tasks in batches of 500
+- **Real-Time Progress**: Action Cable streams progress updates to the UI
+- **Job Monitoring**: Mission Control Jobs provides job queue visibility
+- **Background Processing**: Solid Queue handles async job execution
+- **Database Optimization**: Bulk updates with `update_all`, proper indexing
+
+See [docs/guides/bulk-operations.md](docs/guides/bulk-operations.md) for complete documentation.
+
 ## Additional Resources
 
+- **Bulk Operations Guide**: [docs/guides/bulk-operations.md](docs/guides/bulk-operations.md) - Solid Queue demo documentation
 - **Development Guide**: [docs/guides/development.md](docs/guides/development.md) - Workflow, debugging
 - **Testing Guide**: [docs/guides/testing.md](docs/guides/testing.md) - RSpec, factories, coverage
 - **Deployment Guide**: [docs/guides/deployment.md](docs/guides/deployment.md) - Deploy to Render.com
