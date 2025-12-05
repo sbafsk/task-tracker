@@ -85,21 +85,21 @@ namespace :db do
 
           # Status distribution: 70% todo, 20% in_progress, 10% done
           status = case rand
-                   when 0..0.7 then "todo"
-                   when 0.7..0.9 then "in_progress"
-                   else "done"
-                   end
+          when 0..0.7 then "todo"
+          when 0.7..0.9 then "in_progress"
+          else "done"
+          end
 
           # Priority distribution: bell curve around 3
-          priority = [1, 2, 2, 3, 3, 3, 3, 4, 4, 5].sample
+          priority = [ 1, 2, 2, 3, 3, 3, 3, 4, 4, 5 ].sample
 
           # Due date distribution
           due_date = case rand
-                     when 0..0.15 then nil # 15% no due date
-                     when 0.15..0.30 then rand(1..30).days.ago # 15% overdue
-                     when 0.30..0.60 then rand(1..14).days.from_now # 30% due soon
-                     else rand(15..90).days.from_now # 40% due later
-                     end
+          when 0..0.15 then nil # 15% no due date
+          when 0.15..0.30 then rand(1..30).days.ago # 15% overdue
+          when 0.30..0.60 then rand(1..14).days.from_now # 30% due soon
+          else rand(15..90).days.from_now # 40% due later
+          end
 
           # Completed tasks should have past due dates
           if status == "done" && due_date && due_date > Date.today
@@ -121,7 +121,7 @@ namespace :db do
         # Bulk insert for performance
         Task.insert_all(tasks_data)
 
-        completed = [(batch_num + 1) * batch_size, total_tasks].min
+        completed = [ (batch_num + 1) * batch_size, total_tasks ].min
         puts "  Progress: #{completed}/#{total_tasks} tasks created (#{(completed.to_f / total_tasks * 100).round(1)}%)"
       end
 
