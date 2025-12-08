@@ -71,5 +71,5 @@ group :test do
   gem "selenium-webdriver"
 
   # Matchers for testing Rails functionality
-  gem "shoulda-matchers", "~> 6.0"
+  gem "shoulda-matchers", "~> 7.0"
 end
